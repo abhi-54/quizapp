@@ -1,0 +1,55 @@
+{% extends 'base.html' %} {% load crispy_forms_tags %}{% block content %}
+<div class="container" style="color: black;">
+  <!-- Outer Row -->
+  <div class="row justify-content-center">
+    <div class="col-xl-10 col-lg-12 col-md-9">
+      <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+          <!-- Nested Row within Card Body -->
+          
+          <div class="row">
+            
+            <div class="col-lg-6">
+              <div class="p-5">
+                <div class="text-center">
+                  <div class="p-4 text-xl-center"></div>
+                  <h2>Register</h2>
+                </div>
+                  <form
+                    method="post"
+                    action="/reges/"
+                  >
+                    {% csrf_token %} {{ form |crispy }}{{formext |crispy}}
+                    <hr />
+                    <input
+                      class="btn btn-success"
+                      type="submit"
+                      value="Create Account"
+                    />
+                  </form>
+                </div>
+              
+              
+          
+              <br />
+            </div>
+            <!-- <a class="btn btn-warning text-white text-xl-right" href="adminRegistration"
+              >Register</a
+            > -->
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+            {% endblock %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
