@@ -1,56 +1,34 @@
-from django.contrib.auth import authenticate, login,logout
+from django.db import models
+from django.contrib.auth.models import User
+from .utils import stdchoice, generate_ref_code
 
-from django.contrib.auth import authenticate
-from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import render, redirect
-from django.http.response import HttpResponse
-from .forms import FormRegestration
+
 # Create your views here.
 
-def reges(request):
-    if request.method == "GET":
-        form = FormRegestration()
-        context = {
-            "form": form,
-        }
-        return render(request, "regestration.html", context=context)
-    else:
-        print(request.POST)
-        form = FormRegestration(request.POST)
-        if form.is_valid():
-            user = form.save()
-            print(user)
-            if user is not None:
-                return redirect("Login")
-        else:
-            context = {
-                "form": form,
-            }
-            return render(request, "regestration.html", context=context)
+class profile1(models.Model):
+    user = models.CharField(max_length = 150, unique=True)
+    std = models.CharField(max_length=20, choices=stdchoice, default='')
+    ref_code = models.CharField(max_length=12, blank=True, unique=True)
+    reward_points = models.IntegerField(default=0)
+    referred_by = models.CharField(max_length=120, blank=True)
 
+    def save(self, *args, **kwargs):
+       if self.ref_code == '':
+           ref_code = generate_ref_code()
+           self.ref_code = ref_code
+       super().save(*args, **kwargs) # Call the real save() method
 
+    def get_username(self):
+        return str(self.user)
 
-def Login(request):
-    if request.method == "GET":
-        form = AuthenticationForm()
-        context = {
-            "form": form
-        }
-        return render(request, "Login.html", context=context)
-    else:
-        form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
+    def get_std(self):
+        return str(self.std)
 
-            user = authenticate(username=username, password=password)
-            print("authenticated", user)
-            if user is not None:
-                login(request, user)
-                return redirect('question')
+    def get_ref_code(self):
+        return str(self.ref_code)
 
-        else:
-            context = {
-                "form": form
-            }
-            return render(request, "Login.html", context=context)
+    def get_reward_points(self):
+        return str(self.reward_points)
+
+    def __str__(self):
+        return f"{self.user}-{self.std}"

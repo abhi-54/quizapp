@@ -2,6 +2,8 @@ from django.db import models
 from quizes.models import Quiz
 from django.contrib.auth.models import User
 
+from regester.models import profile1
+
 # Create your models here.
 
 class Result(models.Model):
@@ -10,13 +12,7 @@ class Result(models.Model):
     score = models.FloatField(null = True, blank = True)
     date  = models.DateTimeField( auto_now_add=True,null = True , blank = True)
     date1 = models.CharField(max_length = 150,null = True , blank = True)
-    
+    std = models.CharField(max_length=30, null=True, blank=True)
+
     def __str__(self):
-        return str(self.pk)
-
-
-class userResult(models.Model):
-    user = models.CharField(max_length=120)
-    question = models.CharField(max_length=120)
-    answer = models.CharField(max_length=120)
-    topic = models.CharField(max_length=120,null=True, blank=True)
+        return f"{self.user}-{self.quiz}"

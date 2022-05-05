@@ -2,44 +2,46 @@
 {% load static %}
 
 {% block scripts %}
-    <script src="{% static 'quizes/main.js' %}" defer></script>
+<script src="{% static 'quizes/main.js' %}" defer></script>
 {% endblock scripts %}
 
-{% block title %} home {% endblock title %} 
-{% block content %} 
+{% block title %} home {% endblock title %}
+{% block content %}
 <!-- <h3>{{user}}</h3>
 Question 
 <h6>{{question}}<h6>
 Answer
 {{answer}} -->
-<div class="a"  >
 
-  {% for t in topics %}
-  {{t}}
-  
-  {% endfor %}</div>
- <div class="b"> {% for s in score %}
-  
+<div class="a">
+
+    {% for t in topics %}
+    {{t}}
+
+    {% endfor %}</div>
+<div class="b"> {% for s in score %}
+
     {{s}}
-  {% endfor %}
- </div>
- <style>
+    {% endfor %}
+</div>
+{% if chart %}
+<img src="data:image/png;base64,{{chart|safe}}">
+{% endif %}
+<style>
     .a {
         width: 200px;
         float: left;
         background-color: Aqua;
     }
-    
+
     .b {
-        
-        
-        
-    align-content: stretch;
-    justify-content: space-around;
-}
+
+
+
+        align-content: stretch;
+        justify-content: space-around;
     }
-    
-     
- </style>
- 
+</style>
+
+
 {% endblock content %}

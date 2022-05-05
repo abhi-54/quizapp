@@ -12,19 +12,23 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+from questions.s import S as error
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+LOGIN_URL = '/login/'
+LOGOUT_REDIRECT_URL = '/login/'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*=#*5$)4#x3-bw379(ucr$5fi0x5d7v&*2yq+82v3e1%&j2)=o'
+SECRET_KEY = error
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# SECURE_SSL_REDIRECT = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -43,10 +47,15 @@ INSTALLED_APPS = [
     'questions',
     'results',
     'crispy_forms',
+    'regester',
+    'payment',
+    'attendance',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # for serving css
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -60,7 +69,7 @@ ROOT_URLCONF = 'quizapp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates/'),],
+        'DIRS': [os.path.join(BASE_DIR / 'templates/'),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -111,7 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -123,11 +132,25 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
 STATICFILES_DIR = [
     BASE_DIR / 'static',
     BASE_DIR / 'quizes' / 'static',
+    BASE_DIR / 'regester' / 'static',
 ]
+
+# Email Settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'veterinarycare54@gmail.com'
+EMAIL_HOST_PASSWORD = 'vetcare@gmail'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+from django.conf.locale.es import formats as es_formats
+es_formats.DATE_FORMAT = 'd-m-Y'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

@@ -1,0 +1,195 @@
+{% extends 'base.html' %} {% load static %} {% block title %} 
+Dashboard {%endblock title %} {% block content %}
+
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.js"
+        integrity="sha512-7Fh4YXugCSzbfLXgGvD/4mUJQty68IFFwB65VQwdAf1vnJSG02RjjSCslDPK0TnGRthFI8/bSecJl6vlUHklaw=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
+
+
+<div class="container-fluid">
+  <div class="row">
+    {% if y %}
+    <div class="col-xl-8 col-lg-7">
+        <!-- Bar Chart -->
+        <div class="card shadow mb-5">
+          <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
+          </div>
+          <div class="card-body">
+              <div class="chart-area" style="height: max-content;">
+                  <canvas id="myBarChart"></canvas>
+                  <script>
+                      const ctx = document.getElementById('myBarChart').getContext('2d');
+                      const myBarChart = new Chart(ctx, {
+                      type: 'bar',
+                      data: {
+                          labels: [{% for item in y %}'{{item}}',{% endfor %}],
+                          datasets: [{
+                              label: '% of Marks',
+                              data: [{% for item in x %}{{item}},{% endfor %}],
+															backgroundColor: "rgba(255, 99, 132, 0.2)",
+															hoverBackgroundColor: "rgba(78, 115, 223, 0.7)",
+															borderColor: "rgba(255, 99, 132, 0.2)",
+                              /* backgroundColor: [
+                                  'rgba(255, 99, 132, 0.2)',
+                                  'rgba(54, 162, 235, 0.2)',
+                                  'rgba(255, 206, 86, 0.2)',
+                                  'rgba(75, 192, 192, 0.2)',
+                                  'rgba(153, 102, 255, 0.2)',
+                                  'rgba(255, 159, 64, 0.2)'
+                              ],
+                              borderColor: [
+                                  'rgba(255, 99, 132, 1)',
+                                  'rgba(54, 162, 235, 1)',
+                                  'rgba(255, 206, 86, 1)',
+                                  'rgba(75, 192, 192, 1)',
+                                  'rgba(153, 102, 255, 1)',
+                                  'rgba(255, 159, 64, 1)'
+                              ],
+                              borderWidth: 1 */
+                          }]
+                      },
+                      options: {
+													layout: {
+														padding: {
+															left: 10,
+															right: 25,
+															top: 25,
+															bottom: 0
+														}
+													},
+                          scales: {
+                              y: {
+                                  beginAtZero: true
+                              }
+                          }
+                      }
+                  });
+                </script>
+              </div>
+          </div>
+        </div>
+          <!-- Line Chart -->
+          <div class="card shadow mb-5">
+              <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Line Chart</h6>
+              </div>
+              <div class="card-body">
+                  <div class="chart-area" style="height: max-content;">
+                      <canvas id="myLineChart"></canvas>
+                      <script>
+                          const ctline = document.getElementById('myLineChart').getContext('2d');
+                      const myLineChart = new Chart(ctline, {
+                          type: 'line',
+                          data: {
+                              labels: [{% for item in y %}'{{item}}',{% endfor %}],
+                              datasets: [{
+                                  label: '% of Marks',
+                                  data: [{% for item in x %}{{item}},{% endfor %}],
+																	lineTension: 0.2,
+																	backgroundColor: "rgba(78, 115, 223, 0.7)",
+																	borderColor: "rgba(78, 115, 223, 0.5)",
+																	pointRadius: 3,
+																	pointBackgroundColor: "rgba(78, 115, 223, 1)",
+																	pointBorderColor: "rgba(78, 115, 223, 1)",
+																	pointHoverRadius: 3,
+																	pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+																	pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+																	pointHitRadius: 10,
+																	pointBorderWidth: 2,
+                                  /* backgroundColor: [
+                                      'rgba(255, 99, 132, 0.2)',
+                                      'rgba(54, 162, 235, 0.2)',
+                                      'rgba(255, 206, 86, 0.2)',
+                                      'rgba(75, 192, 192, 0.2)',
+                                      'rgba(153, 102, 255, 0.2)',
+                                      'rgba(255, 159, 64, 0.2)'
+                                  ],
+                                  borderColor: [
+                                      'rgba(255, 99, 132, 1)',
+                                      'rgba(54, 162, 235, 1)',
+                                      'rgba(255, 206, 86, 1)',
+                                      'rgba(75, 192, 192, 1)',
+                                      'rgba(153, 102, 255, 1)',
+                                      'rgba(255, 159, 64, 1)'
+                                  ],
+                                  borderWidth: 1 */
+                              }]
+                          },
+                          options: {
+                              scales: {
+                                  y: {
+                                      beginAtZero: true
+                                  }
+                              }
+                          }
+                      });
+                    </script>
+                  </div>
+              </div>
+          </div>
+          <!-- Pie Chart -->
+          <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Pie Chart</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area" style="height: 25rem;">
+                        <canvas id="myPieChart"></canvas>
+                        <script>
+                            const ctpie = document.getElementById('myPieChart').getContext('2d');
+                        const myPieChart = new Chart(ctpie, {
+                            type: 'pie',
+                            data: {
+                                labels: [{% for item in y %}'{{item}}',{% endfor %}],
+                                datasets: [{
+                                    label: '% of Marks',
+                                    data: [{% for item in x %}{{item}},{% endfor %}],
+                                    backgroundColor: [
+                                        'rgba(255, 99, 132, 0.2)',
+                                        'rgba(54, 162, 235, 0.2)',
+                                        'rgba(255, 206, 86, 0.2)',
+                                        'rgba(75, 192, 192, 0.2)',
+                                        'rgba(153, 102, 255, 0.2)',
+                                        'rgba(255, 159, 64, 0.2)'
+                                    ],
+                                    borderColor: [
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(255, 206, 86, 1)',
+                                        'rgba(75, 192, 192, 1)',
+                                        'rgba(153, 102, 255, 1)',
+                                        'rgba(255, 159, 64, 1)'
+                                    ],
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+   		 													maintainAspectRatio: false,
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                      </script>
+                    </div>
+                </div>
+          </div>
+    </div>
+    {% else %}
+    <div class="card shadow p-3 m-3">
+        You have not given any tests yet
+    </div>
+    {% endif %}
+  </div>
+
+</div>
+
+</div>
+</div>
+</div>
+{% endblock content %}

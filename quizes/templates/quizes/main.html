@@ -5,15 +5,9 @@
     <script src="{% static 'quizes/main.js' %}" defer></script>
 {% endblock scripts %}
 
-{% block title %} Home {% endblock title %} 
+{% block title %} List {% endblock title %} 
 {% block content %} 
-<!-- Button trigger modal -->
-{% comment %} <nav class="navbar navbar-light bg-light">
-  <form class="form-inline">
-    <button class="btn btn-outline-success" type="button"><a href = "/result"> Main button</a></button>
-    <button class="btn btn-sm btn-outline-secondary" type="button">Smaller button</button>
-  </form>
-</nav> {% endcomment %}
+<div class="container-fluid">
   <!-- Modal -->
   <div class="modal fade" id="quizStartModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -46,4 +40,5 @@
    data-toggle="modal" data-target="#quizStartModal">{{obj.name}}</button>
    <br> 
   {% endfor %}
+</div>
 {% endblock content %}

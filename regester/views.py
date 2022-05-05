@@ -1,11 +1,86 @@
-from django.contrib.auth import authenticate, login,logout
-
-from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
+from django.db.utils import IntegrityError
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 from django.http.response import HttpResponse
-from .forms import FormRegestration
+from .forms import FormRegestration, ProfileForm, PasswordReset
+from .models import profile1
+from django.utils.datastructures import MultiValueDictKeyError
+from django.contrib.auth.views import PasswordChangeDoneView
+from django.core.mail import send_mail
+
 # Create your views here.
+
+def landing_page(request):
+    return render(request, 'landing/landing_page.html')
+
+def about_page(request):
+    return render(request, 'landing/about.html')
+
+def contact_page(request):
+  # for sending inquiry (contact us form)
+  if request.method == 'POST':    # when user clicks on submit
+    fullname = request.POST.get('fullname')   # get name from html form
+    emailID = request.POST.get('emailID')   # get email from html form
+    message = request.POST.get('message')   # get message from html form
+    
+    # smtp python's send mail function:
+    send_mail(
+      'Quiz Web App Query from ' + fullname,  # subject
+      message + '\nFrom - ' + emailID,    # message
+      emailID,    # by whom (from)
+      ['abhipokharkar54@gmail.com',],    # to who
+    )
+    first_name = fullname.split()
+    context = {
+      'fullname': first_name[0], 
+      'emailID': emailID, 
+      'message': message
+    }
+    return render(request, 'landing/contact.html', context)
+  return render(request, 'landing/contact.html')
+
+@login_required
+def profile_view(request):
+    if request.method == "GET":
+        form = ProfileForm()
+        user = request.user
+        context={
+        "form":form
+         }
+        profile = profile1.objects.get(user=user)
+        #print('len', len(profile))
+        std = profile.get_std()
+        ref_code = profile.get_ref_code()
+        if std != '' or std != None:
+            context = {
+                'std': std,
+                'profile': ref_code,
+            }
+            return render(request, 'already_profile.html', context)
+        #print('data: ', std)
+        return render(request, "profile.html",context)
+    elif request.method == "POST":
+        try:
+            print(request.POST)
+            form = ProfileForm(request.POST)
+            post = request.POST
+            save1 = profile1()
+            save1.user = request.user
+            save1.std = post["std"]
+            save1.save()
+            context={
+            "form":form,
+            "std": post["std"],
+            }
+            return render(request, "profile.html",context)
+        except IntegrityError:
+            context = {
+                'std': profile1().std
+            }
+            return render(request, 'already_profile.html', context)
 
 def reges(request):
     if request.method == "GET":
@@ -15,11 +90,28 @@ def reges(request):
         }
         return render(request, "regestration.html", context=context)
     else:
-        print(request.POST)
+        #print(request.POST)
         form = FormRegestration(request.POST)
+        profile = profile1()
+        profile.user = request.POST['username']
+        profile.std = request.POST['std']
+        try:
+            entered_ref_code = request.POST['enter_ref_code']
+        except MultiValueDictKeyError:
+            entered_ref_code = None
+        try:
+            if entered_ref_code != None or entered_ref_code != '':
+                profile_ref = profile1.objects.get(ref_code = entered_ref_code)
+                profile.referred_by = profile_ref.user
+                pre_points = profile_ref.get_reward_points()
+                new_points = int(pre_points) + 10
+                profile1.objects.filter(ref_code = entered_ref_code).update(reward_points = new_points)
+        except profile1.DoesNotExist:
+            pass
+        profile.save()
         if form.is_valid():
             user = form.save()
-            print(user)
+            #print(user)
             if user is not None:
                 return redirect("Login")
         else:
@@ -27,8 +119,6 @@ def reges(request):
                 "form": form,
             }
             return render(request, "regestration.html", context=context)
-
-
 
 def Login(request):
     if request.method == "GET":
@@ -44,13 +134,45 @@ def Login(request):
             password = form.cleaned_data.get('password')
 
             user = authenticate(username=username, password=password)
-            print("authenticated", user)
+            #print("authenticated", user)
             if user is not None:
                 login(request, user)
-                return redirect("main-view")
-
+                return redirect("dashboard-view")
         else:
             context = {
                 "form": form
             }
             return render(request, "Login.html", context=context)
+
+def logout(request):
+	logout(request)
+	return redirect("Login")
+
+def pass_set_view(request):
+    if request.method == 'GET':
+        data = request.GET
+        if len(data) > 0:
+            print(len(data), data)
+            username = data['username']
+            if username == '' or username == None:
+                return render(request, 'pass_set.html')
+            reset_form = PasswordReset(user = username)
+            context = {
+                'reset_form': reset_form
+            }
+            return render(request, 'pass_set.html', context)
+    if request.method == 'POST':
+        username = request.GET['username']
+        #print('--post: ', request.POST, request.GET)
+        user = User.objects.get(username = username)
+        r_form = PasswordReset(user = user, data = request.POST)
+        if r_form.is_valid():
+            s = r_form.save()
+            if s is not None:
+                return redirect('done-set-password-page')
+    return render(request, 'pass_set.html')
+
+def done_setting_pass(request):
+    return render(request, 'pass_set_done.html')
+
+

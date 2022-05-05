@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App | Dashboard</title>
+    <script src="https://kit.fontawesome.com/cccca033bc.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="{% static 'dashboard.css' %}" rel="stylesheet" type="text/css">
+    <style>
+      body {background-color: #dbf3e2;}
+    </style>
+</head>     
+<body>     
+    <div class="container">
+        <div class="navbar">
+            <div class="logo d">
+                <img src="logo.jpg" width="36px" alt="">
+                
+                <span class="logoname">Quiz App</span>
+            </div>
+
+            
+
+            <div class="navitem d">
+                <!-- <div class="icons">
+                    <ul>
+                        <li><i class="fa fa-envelope"></i></li>
+                        <li><i class="fa fa-bell"></i></li>
+                    </ul>
+                </div> -->
+
+                <div class="account">
+                    <img src="therock.jpg" width="25px" height="25px" alt="">
+                    <span class="name">
+                      {% if request.user %}
+                        {{request.user}}
+                    </span>
+                    <span class="username">{{request.user.email}}
+                      </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar bg">
+            <ul>
+                <li class="dashboard">
+                    <i class="fa fa-signal"></i>
+                    <a href="#">dashboard</a>  
+                    <div class="togglebtn"></div>  
+                </li>
+  
+          <div class="toggle">
+                <li>
+                    <i class="fas fa-list-alt"></i>
+                    <a href="/question/quizes">Quiz List</a>
+                </li>
+
+                <li>
+                    <i class="fas fa-poll-h"></i>
+                    <a href="/result">Result</a>
+                </li>
+
+               <!--  <li>
+                    <i class="fa fa-credit-card-alt"></i>
+                    <a href="#">card</a>
+                </li>
+
+                <li>
+                    <i class="fa fa-history"></i>
+                    <a href="#">history</a>
+                </li>
+
+                <li>
+                    <i class="fa fa-info-circle"></i>
+                    <a href="#">details</a>
+                </li>   -->
+            </div>
+            </ul>
+        </div>
+
+        <div class="header">
+            <div class="tittle">
+                <h2>Hi {{request.user.first_name}} {{request.user.last_name}}
+                  {% endif %}</h2>
+                <h1>Overview</h1>
+            </div>
+        </div>
+
+        <div class="card1 bg card  row-1">
+            <div class="box">
+                <div class="logo">
+                    <i class="fa fa-file"></i>
+                </div>
+
+                <div class="content">
+                    <h1>Blocked IPs</h1>
+                    <h2>1,543</h2>
+                    <h3>20% of all block IPs</h3>
+                    <a href="#">View more details</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card2 bg card  row-1">
+            <div class="box">
+                <div class="logo">
+                    <i class="fa fa-file-text"></i>
+                </div>
+
+                <div class="content">
+                    <h1>Total Saved</h1>
+                    <h2>950</h2>
+                    <h3>1100 click in $0.5 CPC</h3> 
+                </div>
+            </div>
+        </div>
+
+        <div class="card3 bg card  row-1">
+            <div class="box">
+                <div class="logo">
+                    <i class="fa fa-paper-plane"></i>
+                </div>
+
+                <div class="content">
+                    <h1>Final Score</h1>
+                    <h2>4.6</h2>
+                    <h3>final score out of 10</h3>
+                    <a href="#">View score deatails</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="graph bg">
+            <div class="chart">
+                <div class="status">website status</div>
+
+                <div class="box">
+                    <li style="--i:0"><span class="text">oct 25</span></li>
+                    <li style="--i:1"><span class="text">oct 26</span></li>
+                    <li style="--i:2"><span class="text">oct 27</span></li>
+                    <li style="--i:3"><span class="text">oct 28</span></li>
+                    <li style="--i:4"><span class="text">oct 29</span></li>
+                    <li style="--i:5"><span class="text">oct 30</span></li>
+                </div>
+
+                <ul>
+                    <li>1000</li>
+                    <li>800</li>
+                    <li>400</li>
+                    <li>100</li>
+                    <li>50</li>
+                    <li>0</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="debitcard">
+            <img src="card6.png" width="100%" height="100%" alt="">
+        </div>
+
+        <div class="card4 bg card row-2">
+            <div class="box">
+                <div class="logo">
+                    <i class="fa fa-bar-chart"></i>
+                </div>
+
+                <div class="content">
+                    <h1>85.7%</h1>
+                    <h2>Ads click Rate</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="card5 bg card row-2">
+            <div class="box">
+                <div class="logo">
+                    <i class="fa fa-address-card"></i>
+                </div>
+
+                <div class="content">
+                    <h1>943</h1>
+                    <h2>From advertising</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="card6 bg card row-2">
+            <div class="box">
+                <div class="logo">
+                    <i class="fa fa-desktop"></i>
+                </div>
+
+                <div class="content">
+                    <h1>21.1%</h1>
+                    <h2>View detection Rate</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>   
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+        $(document).ready(function(){
+            $(".togglebtn").click(function(){
+                $(".toggle").slideToggle();
+            });
+
+            $(".togglebtn").click(function(){
+                $(".togglebtn").toggleClass("active");
+            });
+        });
+</script>
+</html>

@@ -1,0 +1,22 @@
+.shadow:hover {
+  box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15)!important;
+}
+
+.text-black {
+  color: black;
+}
+
+.h-line {
+  border-top: 1.5px solid #507ef5;
+}
+
+.card-right {
+  display: grid;
+  align-items: center;
+  border: none;
+}
+
+.card-right li {
+  color: black;
+  margin-bottom: 0.5rem;
+}

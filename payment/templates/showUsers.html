@@ -1,0 +1,59 @@
+{% extends "base_payment.html" %}
+{% block title %}- Show Users{% endblock %}
+{% block content %}
+
+<!--Table invert using jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+<style>
+
+</style>
+
+<script>
+  function toggleView() {
+    $("#tableid").each(function () {
+      var $this = $(this);
+      var newrows = [];
+      $this.find("tr").each(function () {
+        var i = 0;
+        $(this).find("td,th").each(function () {
+          i++;
+          if (newrows[i] === undefined) {
+            newrows[i] = $("<tr></tr>");
+          }
+          newrows[i].append($(this));
+        });
+      });
+      $this.find("tr").remove();
+      $.each(newrows, function () {
+        $this.append(this);
+      });
+    });
+    return false;
+  }
+  window.onload = toggleView;
+</script>
+<form action="/payment/quizAllow/" method="post">
+{% csrf_token %}
+<table class="table table-bordered table-hover" id="tableid">
+  <tr>
+    <th>Users</th>
+    {% for user in users %}
+      <td>
+        <button class="btn btn-outline-info" name="btn" value="{{ user.username }}">
+          {{ user.first_name }} {{ user.last_name }}
+        </button>
+      </td>
+    {% endfor %}
+  </tr>
+  <tr>
+    <th>Class</th>
+    {% for std in stds %}
+    <td>{{ std }}</td>
+    {% endfor %}
+  </tr>
+</table>
+</form>
+
+{% endblock content %}

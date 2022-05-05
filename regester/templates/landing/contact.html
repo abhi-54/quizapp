@@ -1,0 +1,71 @@
+{% extends 'landing/base_out.html' %}
+{% load static %}
+{% block title %}
+  Contact
+{% endblock title %}
+
+{% block content %}
+{% if fullname %}
+	<br><br>
+	<center>
+		<div class="alert alert-primary" role="alert">
+			<h2 class="text-black">Thanks {{ fullname }} </h2>
+			<p class="text-black">We recieved your email and will respond shortly</p>
+		</div>
+	</center>
+	<br>
+	<br>
+{% endif %}
+<div class="container">
+	<div class="row mb-5 pb-5">
+		<div class="col-sm-5" data-aos="fade-up" data-aos-offset="-500">
+			<img src="{% static 'landing/images/contact.jpg' %}" alt="contact" class="img-fluid">
+      <!--Image Credit: https://www.bootstrapdash.com/demo/marshmallow/images/contact.jpg -->
+		</div>
+		<div class="col-sm-7" data-aos="fade-up" data-aos-offset="-500">
+			<h3 class="font-weight-medium text-black mt-5 mt-lg-0">Got A Problem</h3>
+			<h5 class="text-black mb-5">Reach out to us</h5>
+			<form method="post">
+				{% csrf_token %}
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<input type="text" class="form-control" id="name" placeholder="Name*" name="fullname">
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<input type="email" class="form-control" id="mail" placeholder="Email*" name="emailID">
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<div class="form-group">
+							<textarea name="message" id="message" class="form-control" placeholder="Message*" rows="5"></textarea>
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<button href="#" class="btn bg-blue text-white">SEND</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<hr class="h-line mb-5">
+
+	<div class="card mb-4 text-black" style="width: fit-content;">
+		<div class="card-body">
+			<i class="fas fa-map-marker-alt"></i>
+			<span class="ml-2">Brahmapuri, Chandrapur, Maharashtra, India</span>
+			<br><br>
+			<i class="fas fa-phone-alt"></i>
+			<span class="ml-2">+91 7020643927</span>
+			<br><br>
+			<i class="fas fa-envelope"></i>
+			<a class="ml-2" href="mailto: webstar8000@gmail.com">webstar8000@gmail.com</a>
+		</div>
+	</div>
+
+</div>
+
+{% endblock content %}

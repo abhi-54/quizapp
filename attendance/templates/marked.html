@@ -1,0 +1,13 @@
+{% extends 'base_attendance.html' %}
+{% load static %}
+{% block title %} Marked Attendance {% endblock title %}
+
+{% block content %}
+
+<div class="alert alert-primary" role="alert">
+  <h2 class="text-black">Attendance of Class {{ std }} - {{ subject }} Marked Successfully!</h2>
+  <p class="text-black">Date: {{ date }}</p>
+  <p class="text-black">Total Present: {{ n_present }} / {{ n_total }}</p>
+</div>
+
+{% endblock content %}

@@ -1,5 +1,37 @@
 
 db.sqlite3
 *.pyc
+*.svg
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.css.map
+*scss
+*.scss
 __pycache__
 .vscode
+s.py
+*.md
+*.min.*
+*.less
+
+# bootstrap-datepicker
+docs/_build
+*-dist.zip
+
+# OS or Editor folders
+.DS_Store
+.idea
+
+# Folders to ignore
+bower_components
+node_modules
+
+.editorconfig
+.travis.yml
+bower.json
+composer.json
+Gruntfile.js
+package.json
+yarn.lock

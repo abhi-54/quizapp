@@ -1,0 +1,21 @@
+{% extends 'landing/base_out.html' %}
+{% load static %}
+{% block title %}
+  About
+{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+  <div class="forCompanyLogo mb-4">
+    <img src="{% static 'landing/images/jguru_company_img.jpeg' %}" alt="JGURU & Ramrekha Foundation">
+  </div>
+  <p class="text-black">
+    JGURU is a KPO and an Educational Institute associated with an NGO Ramrekha Foundation located in Chandrapur. 
+    It is founded by Mr Chandrakant Jengathe, who is an MBA graduate. 
+    The Ramrekha Foundation help students from remote villages.
+    The organization emphasises on knowledge outsourcing and educating students with the help of new technologies like websites, apps. 
+  </p>
+</div>
+
+{% endblock content %}
