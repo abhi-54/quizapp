@@ -155,9 +155,19 @@ def quiz_data_view(request, pk):
 
     })
 
+# request.is_ajax() is now deprecated
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+""" def ajax_test(request):
+    if is_ajax(request=request):
+        message = "This is ajax"
+    else:
+        message = "Not ajax"
+    return HttpResponse(message) """
 
 def save_quiz_view(request, pk):
-    if request.is_ajax():
+    if is_ajax(request=request):
         questions = []
         data = request.POST
         data_ = dict(data.lists())
