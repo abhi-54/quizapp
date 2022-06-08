@@ -1,19 +1,39 @@
+from multiprocessing import context
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from questions.forms import AnswerForm, QuestionForm
 from questions.models import Answer, Question
 from quizes.forms import SubjectForm, QuizForm
 from django.forms import inlineformset_factory
 
+from quizes.models import Quiz, Subjects1
+
 # Create your views here.
 
 def custom_admin(request):
-  return render(request, 'base_quiz_panel.html')
+  breadcrumbs = (
+    ('Home', '/panel/'),
+  )
+  subjects = len(Subjects1.objects.all())
+  quizes = len(Quiz.objects.all())
+  questions = len(Question.objects.all())
+  context = {
+    'breadcrumbs': breadcrumbs,
+    'subjects': subjects,
+    'quizes': quizes,
+    'questions': questions
+  }
+  return render(request, 'base_quiz_panel.html', context)
 
 def add_subject_view(request):
   form = SubjectForm()
+  breadcrumbs = (
+    ('Home', '/panel/'),
+    ('Add Subject', '/panel/add-subject/')
+  )
   context = {
-    'form': form
+    'form': form,
+    'breadcrumbs': breadcrumbs,
   }
   if request.method == 'POST':
     form = SubjectForm(request.POST)
@@ -23,8 +43,13 @@ def add_subject_view(request):
 
 def add_quiz_view(request):
   form = QuizForm()
+  breadcrumbs = (
+    ('Home', '/panel/'),
+    ('Add Quiz', '/panel/add-quiz/')
+  )
   context = {
-    'form': form
+    'form': form,
+    'breadcrumbs': breadcrumbs
   }
   if request.method == 'POST':
     form = QuizForm(request.POST)
@@ -36,9 +61,14 @@ def add_question_view(request):
   q_form = QuestionForm()
   a_form = inlineformset_factory(Question, Answer, fields='__all__', extra=4, can_delete=False)
   #a_form = AnswerForm()
+  breadcrumbs = (
+    ('Home', '/panel/'),
+    ('Add Question-Answer', '/panel/add-question/')
+  )
   context = {
     'q_form': q_form,
-    'a_form': a_form
+    'a_form': a_form,
+    'breadcrumbs': breadcrumbs
   }
   if request.method == 'POST':
     print(request.POST)
@@ -63,3 +93,100 @@ def add_answer_view(request):
     if form.is_valid():
       form.save()
   return render(request, 'add_answer.html', context)
+
+def display_subjects_view(request):
+  breadcrumbs = (
+    ('Home', '/panel/'),
+    ('View Subjects', '/panel/view-subjects/')
+  )
+  subjects = Subjects1.objects.all()
+  context = {
+    'breadcrumbs': breadcrumbs,
+    'subjects': subjects
+  }
+  return render(request, 'view_subjects.html', context)
+
+def display_quizes_view(request):
+  breadcrumbs = (
+    ('Home', '/panel/'),
+    ('View Quizes', '/panel/view-quizes/')
+  )
+  quizes = Quiz.objects.all()
+  context = {
+    'breadcrumbs': breadcrumbs,
+    'quizes': quizes
+  }
+  return render(request, 'view_quizes.html', context)
+
+def display_questions_view(request):
+  breadcrumbs = (
+    ('Home', '/panel/'),
+    ('View Questions', '/panel/view-questions/')
+  )
+  context = {
+    'breadcrumbs': breadcrumbs,
+  }
+  return render(request, 'view_questions.html', context)
+
+def display_Allquestions_view(request):
+  breadcrumbs = (
+    ('Home', '/panel/'),
+    ('View Questions', '/panel/view-questions/'),
+    ('View All Questions', '/panel/view-questions/all/')
+  )
+  questions = Question.objects.all()
+  if request.POST:
+    data = request.POST
+    qInstance = Question.objects.get(id=data['qModel_id'])   # Question Model Instance
+    Qform = QuestionForm(request.POST or None, instance=qInstance)
+    a_form = inlineformset_factory(Question, Answer, fields='__all__', extra=0,can_delete=False)
+    if Qform.is_valid():
+      created_Qform = Qform.save(commit=False)
+      Aform = a_form(request.POST, instance=created_Qform)
+      if Aform.is_valid():
+        created_Qform.save()
+        Aform.save()
+  context = {
+    'breadcrumbs': breadcrumbs,
+    'questions': questions
+  }
+  return render(request, 'allQuestions.html', context)
+
+def modify_question_view(request):
+  if request.POST:
+    breadcrumbs = (
+      ('Home', '/panel/'),
+      ('View Questions', '/panel/view-questions/'),
+      ('Modify Question', '#')
+    )
+    
+    data = request.POST
+    q = data['question']
+    qModel = Question.objects.get(text=q) # Question Model
+    q_form = QuestionForm()
+    a_form = inlineformset_factory(Question, Answer, fields='__all__', extra=0,can_delete=False)
+    formset = a_form(instance=qModel)
+
+    quizes = Quiz.objects.all()
+    index = None    # value of <select> of Quiz
+    for i, quiz in enumerate(quizes):
+      if quiz == qModel.quiz:
+        index = i + 1
+
+    i_typeQ = None    # value of <select> of Type of Question
+    if 'MCQ' in qModel.type_of_question or '0' in qModel.type_of_question:
+      i_typeQ = 0
+    else:
+      i_typeQ = 1
+
+    context = {
+      'breadcrumbs': breadcrumbs,
+      'Qform': q_form,
+      'a_form': a_form,
+      'qModel': qModel,
+      'index1': index,
+      'index2': i_typeQ,
+      'formset': formset
+    }
+    return render(request, 'modify_question.html', context)
+  return redirect('view-questions-page')

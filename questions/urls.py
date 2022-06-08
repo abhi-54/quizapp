@@ -8,4 +8,9 @@ urlpatterns = [
   path('add-quiz/', add_quiz_view, name='add-quiz-page'),
   path('add-question/', add_question_view, name='add-question&answer-page'),
   path('add-answer/', add_answer_view, name='add-answer-page'),
+  path('view-subjects/', display_subjects_view, name='view-subjects-page'),
+  path('view-quizes/', display_quizes_view, name='view-quizes-page'),
+  path('view-questions/', display_questions_view, name='view-questions-page'),
+  path('view-questions/all/', display_Allquestions_view, name='view-Allquestions-page'),
+  path('view-questions/modify/', modify_question_view, name='modify-question-page'),
 ]

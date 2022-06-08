@@ -1,0 +1,99 @@
+{% extends 'base_quiz_panel.html' %}
+
+{% block title %}
+  View Subjects
+{% endblock title %}
+
+{% block content %}
+<style>
+tr th:first-child, td:first-child {
+  width: 7rem;
+} 
+</style>
+<!--Table invert using jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+  function toggleView() {
+    $("#tableid").each(function () {
+      var $this = $(this);
+      var newrows = [];
+      $this.find("tr").each(function () {
+        var i = 0;
+        $(this).find("td,th").each(function () {
+          i++;
+          if (newrows[i] === undefined) {
+            newrows[i] = $("<tr></tr>");
+          }
+          newrows[i].append($(this));
+        });
+      });
+      $this.find("tr").remove();
+      $.each(newrows, function () {
+        $this.append(this);
+      });
+    });
+    return false;
+  }
+  window.onload = toggleView;
+
+</script>
+
+<h3 class="text-black mb-4">
+  View Subjects
+</h3>
+
+<table class="table table-hover" id="tableid">
+  <tr>
+    <th>Sr. No.</th>
+    {% for i in subjects %}
+    <td>
+      <span>{{ forloop.counter }}</span>
+    </td>
+    {% endfor %}
+  </tr>
+
+  <tr>
+    <th>Class</th>
+    {% for subject in subjects %}
+      <td>
+        <span>{{ subject.std }}</span>
+      </td>
+    {% endfor %}
+  </tr>
+
+  <tr>
+    <th>Subject ID</th>
+    {% for subject in subjects %}
+      <td>
+        <span>{{ subject.id }}</span>
+      </td>
+    {% endfor %}
+  </tr>
+
+  <tr>
+    <th>Subject Name</th>
+    {% for subject in subjects %}
+      <td>
+        <span>{{ subject.name }}</span>
+      </td>
+    {% endfor %}
+  </tr>
+
+  <tr>
+    <th>Edit</th>
+    {% for subject in subjects %}
+      <td>
+        <form action="/panel/view-subjects/modify/" method="post">
+          {% csrf_token %}
+          <input class="btn btn-success" type="submit" value="Edit">
+          <input type="hidden" name="subject" value="{{ subject }}">
+        </form>
+      </td>
+    {% endfor %}
+  </tr>
+
+</table>
+
+
+{% endblock content %}

@@ -28,6 +28,11 @@
 
 <style>
 
+:root {
+  --colorA: rgb(209, 61, 61);
+  --colorH: rgb(180,42,42)
+}
+
 a,
 a:hover,
 a:focus {
@@ -100,13 +105,13 @@ a:focus {
 
 #sidebar ul li a:hover {
     color: #ffffff;
-    background: rgb(209, 61, 61);
+    background: var(--colorH);
 }
 
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
     color: #fff;
-    background: #cc6d6d;
+    background: var(--colorA);
 }
 
 a[data-toggle="collapse"] {
@@ -150,6 +155,39 @@ ul.CTAs a {
     transition: all 0.3s;
 }
 
+.card-title {
+  display: flex;
+  justify-content: center;
+  font-weight: 650;
+  color: var(--colorA);
+}
+
+.card-title:hover {
+  color: var(--colorH);
+  text-decoration: underline;
+}
+
+.btn-outline-primary {
+  color: var(--colorA);
+  border-color: var(--colorA)
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--colorH);
+  border-color: var(--colorH)
+}
+
+.unhover a {
+  font-weight: 600;
+}
+
+.unhover a:hover {
+  background-color: var(--bs-dark-rgb)!important;
+}
+
+ul hr {
+  margin: 0.5rem 0;
+}
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
@@ -178,14 +216,35 @@ ul.CTAs a {
         <li class="{% if request.path == '/panel/' %} active {% endif %}">
           <a href="/panel/">Home</a>
         </li>
+        <hr>
+        <li class="unhover">
+          <a class="disabled">Subjects</a>
+        </li>
         <li class="{% if request.path == '/panel/add-subject/' %} active {% endif %}">
           <a href="/panel/add-subject/">Add Subject</a>
+        </li>
+        <li class="{% if request.path == '/panel/view-subjects/' %} active {% endif %}">
+          <a href="/panel/view-subjects/">View Subjects</a>
+        </li>
+        <hr>
+        <li class="unhover">
+          <a class="disabled">Quizes</a>
         </li>
         <li class="{% if request.path == '/panel/add-quiz/' %} active {% endif %}">
           <a href="/panel/add-quiz/">Add Quiz</a>
         </li>
+        <li class="{% if request.path == '/panel/view-quizes/' %} active {% endif %}">
+          <a href="/panel/view-quizes/">View Quizes</a>
+        </li>
+        <hr>
+        <li class="unhover">
+          <a class="disabled">Questions</a>
+        </li>
         <li class="{% if request.path == '/panel/add-question/' %} active {% endif %}">
           <a href="/panel/add-question/">Add Question & Answer</a>
+        </li>
+        <li class="{% if request.path == '/panel/view-questions/' %} active {% endif %}">
+          <a href="/panel/view-questions/">View Questions</a>
         </li>
       </ul>
     </nav>
@@ -201,25 +260,15 @@ ul.CTAs a {
             <i class="fas fa-align-justify"></i>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="nav navbar-nav ml-auto">
-              {% block breadcrumbs %}
-                <div class="breadcrumbs">
-                  <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
-                  {% if title %} &rsaquo; {{ title }}{% endif %}
-                </div>
-              {% endblock %}
-              <li class="nav-item active">
-                <a class="nav-link" href="#">Page</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Page</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Page</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Page</a>
-              </li>
+            <ul class="nav navbar-nav ml-auto text-black">
+              {% for i in breadcrumbs %}
+                <li class="nav-item active">
+                  <a class="nav-link" href="{{ i.1 }}">{{ i.0 }}</a>
+                </li>
+                {% if forloop.counter != breadcrumbs|length %}
+                  <span style="display: flex;align-items: center;">></span>
+                {% endif %}
+              {% endfor %}
             </ul>
           </div>
         </div>
@@ -227,7 +276,32 @@ ul.CTAs a {
       
       <div class="p-3">
         {% block content %}
-    
+          <div class="row">
+            <div class="col-xl-auto col-md-6 mb-5">
+              <div class="card shadow h-100 p-3">
+                <a class="card-title" href="view-subjects/">Subjects</a>
+                <span>Total Number of Subjects: {{subjects}}</span>
+                <a class="btn btn-outline-primary mt-2" href="add-subject/">
+                  <i class="fas fa-plus"></i><br>Add Subject</a>
+              </div>
+            </div>
+            <div class="col-xl-auto col-md-6 mb-5">
+              <div class="card shadow h-100 p-3">
+                <a class="card-title" href="view-quizes/">Quizes</a>
+                <span>Total Number of Quizes: {{ quizes }}</span>
+                <a class="btn btn-outline-primary mt-2" href="add-quiz/">
+                  <i class="fas fa-plus"></i><br>Add Quiz</a>
+              </div>
+            </div>
+            <div class="col-xl-auto col-md-6 mb-5">
+              <div class="card shadow h-100 p-3">
+                <a class="card-title" href="view-questions/">Questions</a>
+                <span>Total Number of Questions: {{ questions }}</span>
+                <a class="btn btn-outline-primary mt-2" href="add-question/">
+                  <i class="fas fa-plus"></i><br>Add Question</a>
+              </div>
+            </div>
+          </div>
         {% endblock content %}
       </div>
     </div>

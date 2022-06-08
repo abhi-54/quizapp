@@ -1,0 +1,130 @@
+{% extends 'base_quiz_panel.html' %}
+
+{% block title %}
+  Modify Question
+{% endblock title %}
+
+{% block content %}
+<style>
+  .control-group {
+    margin-top: 1rem;
+    padding: 0.5rem;
+  }
+
+  .control-label {
+    font-weight: bold;
+  }
+
+  .asteriskField {
+    color: red;
+    font-weight: bolder;
+    margin-left: 0.1rem;
+  }
+
+  .controls input, select {
+    border-radius: 0.5rem;
+    padding: 0.3rem;
+    border: 1px solid black;
+  }
+
+  #id_text {
+    width: 50rem;
+  }
+
+  .multiField {  
+    width: max-content;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    border-bottom: 1px solid rgb(33,37,41);
+  }
+
+  .checkboxinput {
+    margin-left: 5rem;
+  }
+
+  .checkbox {
+    margin-right: 4rem;
+  }
+  
+  @media only screen and (max-width: 1000px) {
+    .container, .nav-item {
+      max-width: 100%;
+    }
+
+    #id_text {
+      width: auto;
+    }
+  }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<div>
+  {% load crispy_forms_tags %}
+  <form action="#" method="post" id="formid">
+    {% csrf_token %}
+    <h3 class="text-black">
+      Edit Question
+    </h3>
+    <div class="mt-4 text-black"> 
+      {% crispy Qform %}
+      <hr>
+      <h3 class="text-black mt-4">
+        Edit Answers
+      </h3>
+      <div class="mt-3 text-black">
+        {{ formset | crispy }}
+        <input type="hidden" id="path" name="path" value="">
+        <input type="hidden" name="qModel_id" value="{{ qModel.id }}">
+        <input class="btn btn-success mt-4" type="submit" value="Submit">
+      </div>
+    </div>
+  </form>
+</div>
+
+<p id="index1" style="display: none;">{{ index1 }}</p>
+<p id="index2" style="display: none;">{{ index2 }}</p>
+<p id="input_text" style="display: none;">{{ qModel }}</p>
+
+<script>
+  input_text = document.getElementById('input_text').innerText;
+  $('#id_text').attr('value', input_text)
+
+  // for displaying pre-defined <select> option of Quiz
+  $('#id_quiz').find('option')
+        .removeAttr('selected')
+        .parent()
+        .find('option[value="'+ document.getElementById('index1').innerText +'"]')
+        .attr('selected', 'selected')
+        .parent()
+        .trigger('change');
+
+  // for displaying pre-defined <select> option of Type of Question
+  $('#id_type_of_question').find('option')
+        .removeAttr('selected')
+        .parent()
+        .find('option[value="'+ document.getElementById('index2').innerText +'"]')
+        .attr('selected', 'selected')
+        .parent()
+        .trigger('change');
+
+  // for applying 'onclick' attr to all checkboxes
+  const checkboxes = document.querySelectorAll('.checkboxinput');
+  checkboxes.forEach((checkbox) => {
+    checkbox.setAttribute('onclick', `selectOnlyThis(this.id)`);
+  });
+
+  // can select only one checkbox
+  function selectOnlyThis(id) {
+    for (var i = 0;i < 4; i++)
+    {
+      document.getElementById("id_answer_set-" + i + "-correct").checked = false;
+    }
+    document.getElementById(id).checked = true;
+  }
+
+  prev_url = document.referrer;
+  $('#formid').attr('action', prev_url);
+
+</script>
+{% endblock content %}
