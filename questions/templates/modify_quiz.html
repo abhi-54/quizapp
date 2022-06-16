@@ -1,0 +1,133 @@
+{% extends 'base_quiz_panel.html' %}
+
+{% block title %}
+  Modify Quiz
+{% endblock title %}
+
+{% block content %}
+<style>
+  .control-group {
+    margin-top: 1rem;
+    padding: 0.5rem;
+  }
+
+  .control-label {
+    font-weight: bold;
+  }
+
+  .asteriskField {
+    color: red;
+    font-weight: bolder;
+    margin-left: 0.1rem;
+  }
+
+  .controls input, select {
+    border-radius: 0.5rem;
+    padding: 0.3rem;
+    border: 1px solid black;
+  }
+
+  #id_text {
+    width: 50rem;
+  }
+
+  .multiField {  
+    width: max-content;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    border-bottom: 1px solid rgb(33,37,41);
+  }
+
+  .checkboxinput {
+    margin-left: 5rem;
+  }
+
+  .checkbox {
+    margin-right: 4rem;
+  }
+  
+  @media only screen and (max-width: 1000px) {
+    .container, .nav-item {
+      max-width: 100%;
+    }
+
+    #id_text {
+      width: auto;
+    }
+  }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<div>
+  {% load crispy_forms_tags %}
+  <form action="#" method="post" id="formid">
+    {% csrf_token %}
+    <h3 class="text-black">
+      Edit Quiz - {{ quizModel }} (Class - {{ quizModel.subject.std }})
+    </h3>
+    <div class="mt-4 text-black">
+      {% crispy quizForm %}
+      <input type="hidden" name="quizModel_id" value="{{ quizModel.id }}">
+      <input class="btn btn-success mt-4" type="submit" value="Submit">
+    </div>
+  </form>
+</div>
+
+<p id="std" style="display: none;">{{ quizModel.subject.std }}</p>
+
+<p id="subjectIndex" style="display: none;">{{ subjectIndex }}</p>
+<p id="quizName" style="display: none;">{{ quizModel.name }}</p>
+<p id="topic" style="display: none;">{{ quizModel.topic }}</p>
+<p id="nQuestions" style="display: none;">{{ quizModel.number_of_questions }}</p>
+<p id="time" style="display: none;">{{ quizModel.time }}</p>
+<p id="scoreToPass" style="display: none;">{{ quizModel.required_score_to_pass }}</p>
+<p id="difficulty" style="display: none;">{{ quizModel.difficulty }}</p>
+
+<script>
+
+  // pre-defining <select> <option> of Subject
+  $('#id_subject').find('option')
+      .removeAttr('selected')
+      .parent()
+      .find('option[value="'+ document.getElementById('subjectIndex').innerText +'"]')
+      .attr('selected', 'selected')
+      .parent()
+      .trigger('change');
+
+  // pre-defining the <input type='text'> of Quiz Name
+  quizName = document.getElementById('quizName').innerText;
+  $('#id_name').attr('value', quizName);
+
+  // pre-defining the <input type='text'> of Quiz Topic
+  topic = document.getElementById('topic').innerText;
+  $('#id_topic').attr('value', topic);
+
+  // pre-defining the <input type='text'> of Quiz Number of Questions
+  nQuestions = document.getElementById('nQuestions').innerText;
+  $('#id_number_of_questions').attr('value', nQuestions);
+
+  // pre-defining the <input type='text'> of Quiz Time
+  time = document.getElementById('time').innerText;
+  $('#id_time').attr('value', time);
+
+  // pre-defining the <input type='text'> of Quiz Required Score to Pass
+  scoreToPass = document.getElementById('scoreToPass').innerText;
+  $('#id_required_score_to_pass').attr('value', scoreToPass);
+
+  // pre-defining <select> <option> of Difficulty
+    $('#id_difficulty').find('option')
+      .removeAttr('selected')
+      .parent()
+      .find('option[value="'+ document.getElementById('difficulty').innerText +'"]')
+      .attr('selected', 'selected')
+      .parent()
+      .trigger('change');
+
+  // setting form action to the previous URL
+  prev_url = document.referrer;
+  $('#formid').attr('action', prev_url);
+
+</script>
+
+{% endblock content %}

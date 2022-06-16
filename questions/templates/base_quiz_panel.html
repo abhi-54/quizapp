@@ -1,0 +1,358 @@
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - {% block title %} Home {% endblock title %}</title>
+
+  <link rel="stylesheet" href="{% static 'custom-admin/css/base.css' %}">
+  <link rel="icon" href="{% static 'images/quiz_icon.png' %}">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+  <link rel="stylesheet"
+      type="text/css"
+      href="{% static 'dashboard/vendor/fontawesome-free/css/all.min.css' %}" />
+
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+    </symbol>
+    <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+    </symbol>
+    <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+    </symbol>
+  </svg>
+</head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!--Script for toggling sidebar-->
+<script>
+  $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
+</script>
+
+<style>
+
+:root {
+  --colorA: rgb(209, 61, 61);
+  --colorH: rgb(180,42,42)
+}
+
+a,
+a:hover,
+a:focus {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.navbar {
+    padding: 15px 10px;
+    background: #fff;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 40px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-btn {
+    box-shadow: none;
+    outline: none !important;
+    border: none;
+}
+
+.line {
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px dashed #ddd;
+    margin: 40px 0;
+}
+
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    transition: all 0.3s;
+}
+
+
+#sidebar.active {
+    margin-left: -250px;
+}
+
+#sidebar .sidebar-header {
+    padding: 20px;
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+    border-bottom: 1px solid #47748b;
+}
+
+#sidebar ul p {
+    color: #fff;
+    padding: 10px;
+}
+
+#sidebar ul li a {
+    padding: 10px;
+    display: block;
+}
+
+#sidebar ul li a:hover {
+    color: #ffffff;
+    background: var(--colorH);
+}
+
+#sidebar ul li.active>a,
+a[aria-expanded="true"] {
+    color: #fff;
+    background: var(--colorA);
+}
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+.dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: #6d7fcc;
+}
+
+ul.CTAs {
+    padding: 20px;
+}
+
+ul.CTAs a {
+    text-align: center;
+    font-size: 0.9em !important;
+    display: block;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+
+#content {
+    width: 100%;
+    padding: 20px;
+    min-height: 100vh;
+    transition: all 0.3s;
+}
+
+.card-title {
+  display: flex;
+  justify-content: center;
+  font-weight: 650;
+  color: var(--colorA);
+}
+
+.card-title:hover {
+  color: var(--colorH);
+  text-decoration: underline;
+}
+
+.btn-outline-primary {
+  color: var(--colorA);
+  border-color: var(--colorA)
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--colorH);
+  border-color: var(--colorH)
+}
+
+.unhover a {
+  font-weight: 600;
+}
+
+.unhover a:hover {
+  background-color: var(--bs-dark-rgb)!important;
+}
+
+ul hr {
+  margin: 0.5rem 0;
+}
+
+.alert {
+    text-align: center;
+    font-weight: 700;
+  }
+
+/* ---------------------------------------------------
+    MEDIAQUERIES
+----------------------------------------------------- */
+
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -250px;
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+    #sidebarCollapse span {
+        display: none;
+    }
+}
+</style>
+<body>
+  <div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar" class="bg-dark text-white">
+      <div class="sidebar-header">
+          <h3>Admin Panel</h3>
+      </div>
+      <hr>
+      <ul class="list-unstyled components">
+        <li class="{% if request.path == '/panel/' %} active {% endif %}">
+          <a href="/panel/">Home</a>
+        </li>
+        <hr>
+        <li class="unhover">
+          <a class="disabled">Subjects</a>
+        </li>
+        <li class="{% if request.path == '/panel/add-subject/' %} active {% endif %}">
+          <a href="/panel/add-subject/">Add Subject</a>
+        </li>
+        <li class="{% if request.path == '/panel/view-subjects/' %} active {% endif %}">
+          <a href="/panel/view-subjects/">View Subjects</a>
+        </li>
+        <hr>
+        <li class="unhover">
+          <a class="disabled">Quizes</a>
+        </li>
+        <li class="{% if request.path == '/panel/add-quiz/' %} active {% endif %}">
+          <a href="/panel/add-quiz/">Add Quiz</a>
+        </li>
+        <li class="{% if request.path == '/panel/view-quizes/' %} active {% endif %}">
+          <a href="/panel/view-quizes/">View Quizes</a>
+        </li>
+        <hr>
+        <li class="unhover">
+          <a class="disabled">Questions</a>
+        </li>
+        <li class="{% if request.path == '/panel/add-question/' %} active {% endif %}">
+          <a href="/panel/add-question/">Add Question & Answer</a>
+        </li>
+        <li class="{% if request.path == '/panel/view-questions/' %} active {% endif %}">
+          <a href="/panel/view-questions/">View Questions</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Page Content  -->
+    <div id="content">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <button type="button" id="sidebarCollapse" class="btn btn-info">
+            <i class="fas fa-align-left"></i>
+          </button>
+          <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-align-justify"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav ml-auto text-black">
+              {% for i in breadcrumbs %}
+                <li class="nav-item active">
+                  <a class="nav-link" href="{{ i.1 }}">{{ i.0 }}</a>
+                </li>
+                {% if forloop.counter != breadcrumbs|length %}
+                  <span style="display: flex;align-items: center;">></span>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </nav>
+      
+      <div class="p-3">
+        {% if msg %}
+          {% if msg.0 == 'E' %}
+            <div class="alert alert-danger mb-3 alert-dismissible fade show" role="alert">
+              <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+              {{ msg }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% else %}
+            <div class="alert alert-success mb-3 alert-dismissible fade show" role="alert">
+              <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+              {{ msg }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endif %}
+          
+          <script>
+            $(".alert").fadeTo(5000, 500).slideUp(500, function() {
+              $(".alert").slideUp(500);
+            });
+          </script>
+        {% endif %}
+
+        {% block content %}
+          <div class="row">
+            <div class="col-xl-auto col-md-6 mb-5">
+              <div class="card shadow h-100 p-3">
+                <a class="card-title" href="view-subjects/">Subjects</a>
+                <span>Total Number of Subjects: {{subjects}}</span>
+                <a class="btn btn-outline-primary mt-2" href="add-subject/">
+                  <i class="fas fa-plus"></i><br>Add Subject</a>
+              </div>
+            </div>
+            <div class="col-xl-auto col-md-6 mb-5">
+              <div class="card shadow h-100 p-3">
+                <a class="card-title" href="view-quizes/">Quizes</a>
+                <span>Total Number of Quizes: {{ quizes }}</span>
+                <a class="btn btn-outline-primary mt-2" href="add-quiz/">
+                  <i class="fas fa-plus"></i><br>Add Quiz</a>
+              </div>
+            </div>
+            <div class="col-xl-auto col-md-6 mb-5">
+              <div class="card shadow h-100 p-3">
+                <a class="card-title" href="view-questions/">Questions</a>
+                <span>Total Number of Questions: {{ questions }}</span>
+                <a class="btn btn-outline-primary mt-2" href="add-question/">
+                  <i class="fas fa-plus"></i><br>Add Question</a>
+              </div>
+            </div>
+          </div>
+        {% endblock content %}
+      </div>
+    </div>
+</div>
+
+  
+</body>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+
+</html>

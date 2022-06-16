@@ -1,0 +1,129 @@
+{% extends 'base_quiz_panel.html' %}
+
+{% block title %}
+  View All Questions
+{% endblock title %}
+
+{% block content %}
+<!--Table invert using jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+  function toggleView() {
+    $("#tableid").each(function () {
+      var $this = $(this);
+      var newrows = [];
+      $this.find("tr").each(function () {
+        var i = 0;
+        $(this).find("td,th").each(function () {
+          i++;
+          if (newrows[i] === undefined) {
+            newrows[i] = $("<tr></tr>");
+          }
+          newrows[i].append($(this));
+        });
+      });
+      $this.find("tr").remove();
+      $.each(newrows, function () {
+        $this.append(this);
+      });
+    });
+    return false;
+  }
+  window.onload = toggleView;
+
+</script>
+
+<style>
+  .table {
+    position: relative;
+  }
+
+  .table th {
+    background-color: rgba(33,37,41, 1);
+    color: white;
+    top: -1;
+    position: sticky;
+    z-index: 25;
+  }
+
+  .table tr:first-child:hover {
+    --bs-table-hover-bg: rgba(255, 255, 255, 0.9);
+  }
+</style>
+
+<h3 class="text-black mb-4">
+  View All Questions
+</h3>
+
+<table class="table table-hover" id="tableid">
+  <tr>
+    <th>Sr. No.</th>
+    {% for i in questions %}
+    <td>
+      <span>{{ forloop.counter }}</span>
+    </td>
+    {% endfor %}
+  </tr>
+
+  <tr>
+    <th>Class</th>
+    {% for question in questions %}
+      <td>
+        <span>{{ question.quiz.subject.std }}</span>
+      </td>
+    {% endfor %}
+  </tr>
+
+  <tr>
+    <th>Quiz</th>
+    {% for question in questions %}
+      <td>
+        <span>{{ question.quiz }}</span>
+      </td>
+    {% endfor %}
+  </tr>
+
+  <tr>
+    <th>Question Type</th>
+    {% for question in questions %}
+      <td>
+        <span>{{ question.type_of_question }}</span>
+      </td>
+    {% endfor %}
+  </tr>
+
+  <tr>
+    <th>Question ID (#)</th>
+    {% for question in questions %}
+      <td>
+        <span>{{ question.id }}</span>
+      </td>
+    {% endfor %}
+  </tr>
+
+  <tr>
+    <th>Question</th>
+    {% for question in questions %}
+      <td>
+        <span>{{ question }}</span>
+      </td>
+    {% endfor %}
+  </tr>
+
+  <tr>
+    <th>Edit</th>
+    {% for question in questions %}
+      <td>
+        <form action="/panel/view-questions/modify/" method="post">
+          {% csrf_token %}
+          <input class="btn btn-success" type="submit" value="Edit">
+          <input type="hidden" name="question" value="{{ question }}">
+        </form>
+      </td>
+    {% endfor %}
+  </tr>
+</table>
+
+
+{% endblock content %}

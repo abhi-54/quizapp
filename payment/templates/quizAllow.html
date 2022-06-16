@@ -1,0 +1,67 @@
+{% extends "base_payment.html" %}
+{% block title %} - Allow a Quiz{% endblock %}
+{% block content %}
+<style>
+  .table td {width: 4rem;}
+</style>
+<div>
+  <table class="table table-bordered">
+    <tr>
+      <td class="font-weight-bold">Name</td>
+      <td>{{ user.first_name }} {{ user.last_name }}</td>
+    </tr>
+    <tr>
+      <td class="font-weight-bold">Username</td>
+      <td>{{ user.username }}</td>
+    </tr>
+    <tr>
+      <td class="font-weight-bold">Class</td>
+      <td>{{ std }}</td>
+    </tr>
+    <tr>
+      <td class="font-weight-bold" rowspan="{{ len_subjects }}">Subjects available</td>
+      <td>{{subjects.0}}</td>
+    </tr>
+
+    {% for subject in subjects %}
+    <tr>
+      {% if subject != subjects.0 %}
+        <td> {{subject}} </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+    
+
+    <tr>
+      <td class="font-weight-bold" rowspan="{{ len_alreadyAllowed }}">Subjects Already Allowed</td>
+      <td>{{alreadyAllowed.0}}</td>
+    </tr>
+
+    {% for s in alreadyAllowed %}
+    <tr>
+      {% if s != alreadyAllowed.0 %}
+        <td> {{s}} </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+
+  </table>
+  <br>
+  <p>Select subjects to allow: </p>
+  <form action="/payment/submitted/" method="post">
+    {% csrf_token %}
+    {% for subject in subjects %}
+    <input type="checkbox" name="subjects_to_allow_{{forloop.counter}}" id="subjects_to_allow" 
+    value="{{subject}}"> {{subject}}
+    {% if subject == alreadyAllowed.0 %} checked {% endif %}
+
+    <br><br>
+    {% endfor %}
+    <input type="hidden" name="user" value="{{ user }}"> 
+    <input type="hidden" name="std"   value="{{ std }}">
+    <input type="hidden" name="subjects"   value="{{ subjects|length }}">
+    <input class="btn btn-success" type="submit" value="Submit">
+ 
+  </form> 
+</div>
+{% endblock content %}

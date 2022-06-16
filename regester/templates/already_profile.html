@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Profile {% endblock title %}
+{% block content %}
+
+  <style>
+    h7 {
+      position: fixed; 
+      bottom: 50;
+      margin: auto;
+    }
+
+    .tableprofile table {
+      color: black;
+    }
+
+    .tableprofile th, tr, td {
+      padding: 0.6rem;
+      border-radius: 25px;
+    }
+
+    .color-black {
+      color: black;
+    }
+
+    #textR {
+      display: none;
+    }
+
+    .refercard {
+      width: 15rem;
+      box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15)!important;
+    }
+  </style>
+<div class="text-dark ml-4 color-black">
+  <br>
+  <div class="tableprofile">
+    <table>
+      <tr>
+        <th>Name </th>
+        <td> {{ request.user.first_name }} {{request.user.last_name}}</td>
+      </tr>
+      <tr>
+        <th>Std </th>
+        <td> {{std}}</td>
+      </tr>
+    </table>
+  </div>
+  <br>
+  <br>
+  <div class="refercard p-3">
+    <p class="font-weight-bold custom">Refer to a Friend: </p> 
+    <button class="btn btn-primary" id="btnR" onclick="showref()">Get your referral code</button> 
+    <span class="custom" id="textR">{{ profile }}</span>
+  </div>
+  <br>
+  <br>
+</div>
+<script>
+  function showref() {
+    document.getElementById('btnR').style.display = "none";
+    document.getElementById('textR').style.display = "block";
+  }
+</script>
+<h7 class="ml-4 color-black">If you wish to change your class, send an email to admin at </h7>
+
+{% endblock content %}

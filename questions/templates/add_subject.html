@@ -1,0 +1,277 @@
+{% extends 'base_quiz_panel.html' %}
+
+{% block title %}
+  Add Subject
+{% endblock title %}
+
+{% block content %}
+<style>
+  .control-group {
+    margin-top: 1rem;
+    padding: 0.5rem;
+  }
+
+  .control-group:hover {
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+    border-radius: 1rem;
+  }
+
+  .control-label {
+    font-weight: bold;
+  }
+
+  .asteriskField {
+    color: red;
+    font-weight: bolder;
+    margin-left: 0.1rem;
+  }
+
+  #div_id_first_name {
+    float: left;
+  }
+
+  #div_id_last_name {
+    float: none;
+    margin-left: 25rem;
+    width: fit-content;
+  }
+
+  .controls input, select {
+    border-radius: 0.5rem;
+    padding: 0.3rem;
+    border: 1px solid black;
+  }
+
+  @media only screen and (max-width: 1000px) {
+    #div_id_first_name {
+      float: none;
+    }
+
+    #div_id_last_name {
+      float: none;
+      margin-left: 0rem;
+      width: fit-content;
+    }
+
+    .container, .nav-item {
+      max-width: 100%;
+    }
+  }
+</style>
+
+<div>
+  <h3 class="text-black">
+    Add Subject
+  </h3>
+  <div class="mt-4 text-black">
+    {% load crispy_forms_tags %}
+    <form action="#" method="post">
+      {% csrf_token %} 
+      {{ form |crispy }}
+      <input class="btn btn-success mt-4" type="submit" value="Submit">
+    </form>
+  </div>
+</div>
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

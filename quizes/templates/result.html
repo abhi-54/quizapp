@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Results {% endblock title %}
+{% block content %}
+<!-- <h3>{{user}}</h3>
+Question 
+<h6>{{question}}<h6>
+Answer
+{{answer}} -->
+<!--Table invert using jQuery-->
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.js"
+        integrity="sha512-7Fh4YXugCSzbfLXgGvD/4mUJQty68IFFwB65VQwdAf1vnJSG02RjjSCslDPK0TnGRthFI8/bSecJl6vlUHklaw=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
+<noscript>
+  <h1>js is not working</h1>
+</noscript>
+
+<style>
+  .tableclass td,
+  th {
+    border: 2px solid #3c5b89;
+    padding: 5px;
+    text-align: left;
+    width: min-content !important;
+  }
+
+  .tableclass {
+    border-radius: 7px;
+    color: black;
+    overflow-wrap: anywhere;
+    border-collapse: collapse;
+    width: 100%;
+  }
+</style>
+
+<script>
+  function toggleView() {
+    $("table").each(function () {
+      var $this = $(this);
+      var newrows = [];
+      $this.find("tr").each(function () {
+        var i = 0;
+        $(this).find("td,th").each(function () {
+          i++;
+          if (newrows[i] === undefined) {
+            newrows[i] = $("<tr></tr>");
+          }
+          newrows[i].append($(this));
+        });
+      });
+      $this.find("tr").remove();
+      $.each(newrows, function () {
+        $this.append(this);
+      });
+    });
+    return false;
+  }
+  window.onload = toggleView;
+</script>
+<div class="p-4 m-4">
+  <p class="h5 text-dark font-weight-bold">Result Table</p>
+  {% if score %}
+    <div class="p-3 bg-white shadow">
+      <table class="tableclass p-3" id="tableid">
+        <tr>
+          <th>Sr. No.</th>
+          {% for num in numberlist %}
+          <td>{{ num }}</td>
+          {% endfor %}
+        </tr>
+        <tr>
+          <th>Title</th>
+          {% for t in topics %}
+          <td>{{t}}</td>
+          {% endfor %}
+        </tr>
+        <tr>
+          <th>Score</th>
+          {% for s in score %}
+          <td>{{s}} %</td>
+          {% endfor %}
+        </tr>
+        <tr>
+          <th>Dates</th>
+          {% for d in date %}
+          <td>{{d}}</td>
+          {% endfor %}
+        </tr>
+      </table>
+    </div>
+    <br><br>
+      <!-- To be used for slow connections -->
+      <!--  <img src="data:image/png;base64,{{chart|safe}}"> -->
+  
+  {% else %}
+  
+    <div class="container">
+      <div class="card shadow p-4">
+        <span>You have not given any tests yet</span> 
+      </div>
+    </div>
+  
+  
+  {% endif %}
+</div>
+
+{% endblock content %}

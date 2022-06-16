@@ -1,0 +1,105 @@
+{% extends 'landing/base_out.html' %}
+{% load static %}
+{% block title %}
+  Sign Up
+{% endblock %}
+
+{% block content %}
+    <style>
+      .control-group {
+        margin-top: 1rem;
+        padding: 0.5rem;
+      }
+
+      .control-group:hover {
+        box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+        border-radius: 1rem;
+      }
+
+      .control-label {
+        font-weight: bold;
+      }
+
+      .asteriskField {
+        color: red;
+        font-weight: bolder;
+        margin-left: 0.1rem;
+      }
+
+      #div_id_first_name {
+        float: left;
+      }
+
+      #div_id_last_name {
+        float: none;
+        margin-left: 25rem;
+        width: fit-content;
+      }
+
+      .controls input, select {
+        border-radius: 0.5rem;
+        padding: 0.3rem;
+        border: 1px solid black;
+      }
+
+      @media only screen and (max-width: 1000px) {
+        #div_id_first_name {
+          float: none;
+        }
+
+        #div_id_last_name {
+          float: none;
+          margin-left: 0rem;
+          width: fit-content;
+        }
+
+        .container, .nav-item {
+          max-width: 100%;
+        }
+      }
+    </style>
+  
+{% load crispy_forms_tags %}
+<div class="container" style="color: black;">
+  <!-- Outer Row -->
+  <div class="row justify-content-center">
+    <div class="col-xl-10 col-lg-12 col-md-9">
+      <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+          <!-- Nested Row within Card Body -->
+          
+          <div class="row">
+            
+            <div class="col-lg-6">
+              <div class="p-5">
+                <div class="text-center">
+                  <div class="p-4 text-xl-center"></div>
+                  <h2>Register</h2>
+                </div>
+                  <form
+                    method="post"
+                    action="/reges/"
+                  >
+                    {% csrf_token %} {{ form |crispy }}{{formext |crispy}}
+                    <hr />
+                    <input
+                      class="btn btn-success"
+                      type="submit"
+                      value="Create Account"
+                    />
+                  </form>
+                  <span>If you are already registered, <a href="/login/">click here to login</a>.</span>
+                </div>
+              <br />
+            </div>
+            <!-- <a class="btn btn-warning text-white text-xl-right" href="adminRegistration"
+              >Register</a
+            > -->
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}

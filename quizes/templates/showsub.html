@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block scripts %}
+    <script src="{% static 'quizes/main.js' %}" defer></script>
+{% endblock scripts %}
+
+{% block title %}
+    Select Topic
+{% endblock title %}
+
+{% block content %}
+
+<h4 class="m-5">Quizes</h4>
+
+<!-- Modal -->
+<div class="modal fade" id="quizStartModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Start Quiz</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="modal-body-confirm">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+          <button type="button" class="btn btn-success" id="start-button">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+	{% for obj in quiz %}
+	<div class="card shadow p-4 m-5">
+		<div class="card-title text-dark">
+			{{ obj }}
+		</div>
+		<div class="card-body">
+			<p>Score to Pass: {{obj.required_score_to_pass}}%</p>
+			<p>Time (minutes): {{ obj.time }}</p>
+		</div>
+		<div class="text-right">
+			<button class="btn btn-success modal-button" 
+			data-qID="{{quiz.id}}"
+			data-pk="{{obj.pk}}"
+			data-quiz="{{obj.name}}"
+			data-questions="{{obj.number_of_questions}}"
+			data-difficulty="{{obj.difficulty}}"
+			data-time="{{obj.time}}"
+			data-pass="{{obj.required_score_to_pass}}"
+			data-toggle="modal" data-target="#quizStartModal">Start</button>
+		</div>
+	</div>
+	
+	{% endfor %}
+
+{% endblock content %}

@@ -1,0 +1,100 @@
+{% extends 'base_quiz_panel.html' %}
+
+{% block title %}
+  Modify Subject
+{% endblock title %}
+
+{% block content %}
+<style>
+  .control-group {
+    margin-top: 1rem;
+    padding: 0.5rem;
+  }
+
+  .control-label {
+    font-weight: bold;
+  }
+
+  .asteriskField {
+    color: red;
+    font-weight: bolder;
+    margin-left: 0.1rem;
+  }
+
+  .controls input, select {
+    border-radius: 0.5rem;
+    padding: 0.3rem;
+    border: 1px solid black;
+  }
+
+  #id_text {
+    width: 50rem;
+  }
+
+  .multiField {  
+    width: max-content;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    border-bottom: 1px solid rgb(33,37,41);
+  }
+
+  .checkboxinput {
+    margin-left: 5rem;
+  }
+
+  .checkbox {
+    margin-right: 4rem;
+  }
+  
+  @media only screen and (max-width: 1000px) {
+    .container, .nav-item {
+      max-width: 100%;
+    }
+
+    #id_text {
+      width: auto;
+    }
+  }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<div>
+  {% load crispy_forms_tags %}
+  <form action="#" method="post" id="formid">
+    {% csrf_token %}
+    <h3 class="text-black">
+      Edit Subject
+    </h3>
+    <div class="mt-4 text-black">
+      {% crispy sForm %}
+      <input type="hidden" name="sModel_id" value="{{ sModel.id }}">
+      <input class="btn btn-success mt-4" type="submit" value="Submit">
+    </div>
+  </form>
+</div>
+
+<p id="sName" style="display: none;">{{ sModel.name }}</p>
+<p id="std" style="display: none;">{{ sModel.std }}</p>
+
+<script>
+  // pre-defining the Subject Name to <input type='text'>
+  sName = document.getElementById('sName').innerText;
+  $('#id_name').attr('value', sName);
+
+  // pre-defining <select> <option> of Std
+  $('#id_std').find('option')
+      .removeAttr('selected')
+      .parent()
+      .find('option[value="'+ document.getElementById('std').innerText +'"]')
+      .attr('selected', 'selected')
+      .parent()
+      .trigger('change');
+
+  // setting form action to the previous URL
+  prev_url = document.referrer;
+  $('#formid').attr('action', prev_url);
+
+</script>
+
+{% endblock content %}
