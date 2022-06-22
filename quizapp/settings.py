@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from questions.s_copy import S as error
 import django_heroku
+import psycopg2
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,7 +32,10 @@ SECRET_KEY = error
 DEBUG = True
 # SECURE_SSL_REDIRECT = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    '*',
+    'quizes-web-app.herokuapp.com',
+]
 
 
 # Application definition
@@ -89,10 +93,25 @@ WSGI_APPLICATION = 'quizapp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+""" DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'quizapp',
+        'USER': 'postgres',
+        'PASSWORD': 'postgre@54',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+} """
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'dfqbt0puum151k',
+        'USER': 'hhzzuftwexofjt',
+        'PASSWORD': 'd7152e349405f8b1437149c68f0cafe06c9e167236bf2ee8812d19024549e077',
+        'HOST': 'ec2-52-73-184-24.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
