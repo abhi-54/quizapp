@@ -14,7 +14,6 @@ from pathlib import Path
 import os
 from questions.s_copy import S as error
 import django_heroku
-import psycopg2
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

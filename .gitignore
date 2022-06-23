@@ -1,16 +1,4 @@
 *.pyc
-*.css.map
-*fonts
-*scss
-*.js.map
-*less
-*metadata
-*.yml
-*svgs
-*webfonts
-attribution.js
 LICENSE.txt
 package.json
-*.min.map
 *.gz
-*.map
