@@ -79,7 +79,19 @@
 ::-webkit-scrollbar-thumb {background: #b15b53;}
 ::-webkit-scrollbar-thumb:hover {background: #ff1500;}
 
+#accordionSidebar.active {
+    margin-left: -100px;
+}
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--Script for toggling sidebar-->
+    <script>
+      $(document).ready(function () {
+                $('#sidebarToggleTop').on('click', function () {
+                    $('#accordionSidebar').toggleClass('active');
+                });
+            });
+    </script>
     <div id="loading"></div>
     <!-- Page Wrapper -->
     <div id="wrapper">
