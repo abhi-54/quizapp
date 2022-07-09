@@ -2,3 +2,4 @@
 LICENSE.txt
 package.json
 *.gz
+heroku_commands.txt

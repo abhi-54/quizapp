@@ -1,4 +1,5 @@
 {% extends 'base_quiz_panel.html' %}
+{% load static %}
 
 {% block title %}
   View Subjects
@@ -10,26 +11,30 @@ tr th:first-child, td:first-child {
   width: 7rem;
 }
 
-  .table {
-    position: relative;
-  }
+.table {
+  position: relative;
+}
 
-  .table th {
-    background-color: rgba(33,37,41, 1);
-    color: white;
-    top: -1;
-    position: sticky;
-    z-index: 25;
-  }
+.table th {
+  background-color: rgba(33,37,41, 1);
+  color: white;
+  top: -1;
+  position: sticky;
+  z-index: 25;
+}
 
-  .table tr:first-child:hover {
-    --bs-table-hover-bg: rgba(255, 255, 255, 0.9);
-  }
+.table tr:first-child:hover {
+  --bs-table-hover-bg: rgba(255, 255, 255, 0.9);
+}
+
+.displayDelete {
+  display: none;
+}
 </style>
 
 <!--Table invert using jQuery-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+<script src="{% static 'custom-admin/js/common.js' %}"></script>
 <script>
   function toggleView() {
     $("#tableid").each(function () {
@@ -53,14 +58,30 @@ tr th:first-child, td:first-child {
     return false;
   }
   window.onload = toggleView;
-
 </script>
 
 <h3 class="text-black mb-4">
   View Subjects
 </h3>
 
+<form action="/panel/view-subjects/confirm-delete/" method="post">
+
+<div class="displayDelete" id="displayDelete">
+  <input class="btn btn-outline-danger mb-3" type="submit" value="Delete Selected">
+</div>
+
 <table class="table table-hover" id="tableid">
+  <tr>
+    <th><input id="select-all" onclick="toggle(); display();" type="checkbox"> Select All</th>
+    {% for subject in subjects %}
+      <td>
+        <input type="checkbox" name="{{subject}}" class="check-box" onclick="display()">
+      </td>
+    {% endfor %}
+  </tr>
+</form>
+
+
   <tr>
     <th>Sr. No.</th>
     {% for i in subjects %}
@@ -112,5 +133,20 @@ tr th:first-child, td:first-child {
 
 </table>
 
+<script>
+function display()
+{
+  elements = document.querySelectorAll('.check-box');
+  for (var i = 0; i <= elements.length + 1 ; i++)
+  {
+    document.getElementById('displayDelete').style.display = 'block';
+    console.log(elements[i].checked)
+    if (elements[i].checked)
+    {
+      document.getElementById('displayDelete').style.display = 'block';
+    }
+  }
+}
+</script>
 
 {% endblock content %}

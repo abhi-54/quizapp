@@ -6,6 +6,18 @@
 
 {% block content %}
 
+<style>
+@media (max-width: 768px) {
+    img {
+      max-width: 100%;
+    }
+
+    p {
+      text-align: justify;
+    }
+}
+</style>
+
 <div class="container">
   <div class="forCompanyLogo mb-4">
     <img src="{% static 'landing/images/jguru_company_img.jpeg' %}" alt="JGURU & Ramrekha Foundation">

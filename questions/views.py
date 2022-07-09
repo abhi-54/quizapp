@@ -5,11 +5,12 @@ from questions.forms import AnswerForm, QuestionForm
 from questions.models import Answer, Question
 from quizes.forms import SubjectForm, QuizForm
 from django.forms import inlineformset_factory
-
+from django.contrib.admin.views.decorators import staff_member_required
 from quizes.models import Quiz, Subjects1
 
 # Create your views here.
 
+@staff_member_required
 def custom_admin(request):
   breadcrumbs = (
     ('Home', '/panel/'),
@@ -25,6 +26,7 @@ def custom_admin(request):
   }
   return render(request, 'base_quiz_panel.html', context)
 
+@staff_member_required
 def add_subject_view(request):
   form = SubjectForm()
   breadcrumbs = (
@@ -41,6 +43,7 @@ def add_subject_view(request):
       form.save()
   return render(request, 'add_subject.html', context)
 
+@staff_member_required
 def add_quiz_view(request):
   form = QuizForm()
   breadcrumbs = (
@@ -57,6 +60,7 @@ def add_quiz_view(request):
       form.save()
   return render(request, 'add_quiz.html', context)
 
+@staff_member_required
 def add_question_view(request):
   q_form = QuestionForm()
   a_form = inlineformset_factory(Question, Answer, fields='__all__', extra=4, can_delete=False)
@@ -82,6 +86,7 @@ def add_question_view(request):
    
   return render(request, 'add_question.html', context)
 
+@staff_member_required
 def add_answer_view(request):
   form = inlineformset_factory(Question, Answer, fields='__all__', extra=4)
   form = AnswerForm()
@@ -94,6 +99,7 @@ def add_answer_view(request):
       form.save()
   return render(request, 'add_answer.html', context)
 
+@staff_member_required
 def display_subjects_view(request):
   breadcrumbs = (
     ('Home', '/panel/'),
@@ -119,6 +125,7 @@ def display_subjects_view(request):
 
   return render(request, 'view_subjects.html', context)
 
+@staff_member_required
 def display_quizes_view(request):
   breadcrumbs = (
     ('Home', '/panel/'),
@@ -143,6 +150,7 @@ def display_quizes_view(request):
     context['msg'] = msg
   return render(request, 'view_quizes.html', context)
 
+@staff_member_required
 def display_questions_view(request):
   breadcrumbs = (
     ('Home', '/panel/'),
@@ -153,6 +161,7 @@ def display_questions_view(request):
   }
   return render(request, 'view_questions.html', context)
 
+@staff_member_required
 def display_Allquestions_view(request):
   breadcrumbs = (
     ('Home', '/panel/'),
@@ -183,6 +192,7 @@ def display_Allquestions_view(request):
   
   return render(request, 'allQuestions.html', context)
 
+@staff_member_required
 def modify_subject_view(request):
   if request.POST:
     breadcrumbs = (
@@ -204,6 +214,7 @@ def modify_subject_view(request):
     return render(request, 'modify_subject.html', context)
   return redirect('view-subjects-page')
 
+@staff_member_required
 def modify_quiz_view(request):
   if request.POST:
     breadcrumbs = (
@@ -231,6 +242,7 @@ def modify_quiz_view(request):
     return render(request, 'modify_quiz.html', context)
   return redirect('view-quizes-page')
 
+@staff_member_required
 def modify_question_view(request):
   if request.POST:
     breadcrumbs = (

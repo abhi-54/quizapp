@@ -7,9 +7,11 @@ from regester.models import profile1
 from regester.utils import stdchoice
 from django.contrib.auth.models import User
 import datetime
+from django.contrib.admin.views.decorators import staff_member_required
 
 # Create your views here.
 
+@staff_member_required
 def select_class_view(request):
   stds = stdchoice
   if request.path == '/payment/class/':
