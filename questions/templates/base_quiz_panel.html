@@ -235,6 +235,13 @@ ul hr {
           <a href="/panel/">Home</a>
         </li>
         <hr>
+        <li>
+          <a href="/attendance/class/" style="font-weight: 600;">Attendance Dashboard</a>
+        </li>
+        <li>
+          <a href="/payment/" style="font-weight: 600;">Payment Alternative</a>
+        </li>
+        <hr>
         <li class="unhover">
           <a class="disabled">Subjects</a>
         </li>
@@ -316,6 +323,23 @@ ul hr {
         {% endif %}
 
         {% block content %}
+          <div class="row">
+            <div class="col-xl-auto col-md-6 mb-5">
+              <div class="card shadow h-100 p-3">
+                <a class="btn btn-outline-primary mt-2" href="/attendance/class/">
+                  <b>Attendance Dashboard</b>
+                </a>
+              </div>
+            </div>
+            <div class="col-xl-auto col-md-6 mb-5">
+              <div class="card shadow h-100 p-3">
+                <a class="btn btn-outline-primary mt-2" href="/payment/">
+                  <b>Payment Alternative</b>
+                </a>
+              </div>
+            </div>
+          </div>
+          <hr class="mb-5">
           <div class="row">
             <div class="col-xl-auto col-md-6 mb-5">
               <div class="card shadow h-100 p-3">
