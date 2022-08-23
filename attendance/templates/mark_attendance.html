@@ -1,21 +1,13 @@
-{% extends 'base_attendance.html' %}
+{% extends 'base_quiz_panel.html' %}
+
 {% load static %}
 {% block title %} Mark Present {% endblock title %}
 
 {% block content %}
-<!-- jQuery -->
-<script src="{% static 'jquery-3.1.1.min.js' %}" type='text/javascript'></script>
-
-<!-- Bootstrap -->
-<link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel='stylesheet' type='text/css'>
-<script src="{% static 'bootstrap/js/bootstrap.min.js' %}" type='text/javascript'></script>
 
 <!-- Datepicker -->
 <link href="{% static 'bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}" rel='stylesheet' type='text/css'>
 <script src="{% static 'bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js' %}" type='text/javascript'></script>
-
-<!--Table invert using jQuery-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
   function toggleView() {
@@ -80,13 +72,19 @@
   }
 </script>
 
+{% if msg %}
+<div>
+  {{ msg }}
+</div>
+{% endif %}
+
 <form action="/attendance/class/subject/user/marked/" method="post">
   {% csrf_token %}
 
   <!--Bootstrap Datepicker Credit: https://makitweb.com/how-to-add-datepicker-in-bootstrap/-->
   <div class="mb-5 mt-4 p-2">
     <span>
-      Select Date
+      Select Date: 
     </span> 
     <input class="ml-3" name="date" placeholder="Click here to select date" data-provide="datepicker" required>
   </div>

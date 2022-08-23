@@ -204,7 +204,13 @@ ul hr {
 .alert {
     text-align: center;
     font-weight: 700;
-  }
+}
+
+.alert-danger {
+  top: -1;
+  position: sticky;
+  z-index: 25;
+}
 
 /* ---------------------------------------------------
     MEDIAQUERIES
@@ -316,8 +322,8 @@ ul hr {
           {% endif %}
           
           <script>
-            $(".alert").fadeTo(5000, 500).slideUp(500, function() {
-              $(".alert").slideUp(500);
+            $(".alert-success").fadeTo(10000, 500).slideUp(500, function() {
+              $(".alert-success").slideUp(500);
             });
           </script>
         {% endif %}

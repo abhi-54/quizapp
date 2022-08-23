@@ -13,6 +13,10 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 @staff_member_required
 def select_class_view(request):
+  breadcrumbs = (
+      ('Home', '/panel/'),
+      ('Attendance - Select Class', '/attendance/class/'),
+  )
   stds = stdchoice
   if request.path == '/payment/class/':
     title = 'Payment'
@@ -21,10 +25,16 @@ def select_class_view(request):
   context = {
       "stds": stds,
       "title": title,
+      "breadcrumbs": breadcrumbs,
   }
   return render(request, 'select_class.html', context)
 
 def select_subject_view(request):
+  breadcrumbs = (
+      ('Home', '/panel/'),
+      ('Attendance - Select Class', '/attendance/class/'),
+      ('Select Subject', '#'),
+  )
   if request.method == 'POST':
     std = request.POST['btn']
     subjects = Subjects1.objects.filter(std = std)
@@ -34,29 +44,48 @@ def select_subject_view(request):
     context = {
       'std': std,
       'subjects': subjects_list,
+      "breadcrumbs": breadcrumbs,
     }
     return render(request, 'select_subject.html', context)
   return redirect('select-class-page')
 
 def mark_attendance_view(request):
+  breadcrumbs = (
+      ('Home', '/panel/'),
+      ('Attendance - Select Class', '/attendance/class/'),
+      ('Select Subject', '/attendance/class/subject/'),
+      ('Mark Attendance', '#'),
+  )
   if request.method == 'POST':
     std = request.POST['std']
     subject = request.POST['sub-btn']
     users = profile1.objects.filter(std = std)
     userModel_list = []
+    msg = ''
     for i in users:
       user_name = i.get_username()
+      print('------', user_name)
       userModel = User.objects.get(username = user_name)
       userModel_list.append(userModel)
+      
     context = {
       'std': std,
       'users': userModel_list,
       'subject': subject,
+      'msg': msg,
+      "breadcrumbs": breadcrumbs,
     }
     return render(request, 'mark_attendance.html', context)
   return redirect('select-class-page')
 
 def attendace_marked_view(request):
+  breadcrumbs = (
+      ('Home', '/panel/'),
+      ('Attendance - Select Class', '/attendance/class/'),
+      ('Select Subject', '/attendance/class/subject/'),
+      ('Mark Attendance', '/attendance/class/subject/user/'),
+      ('Marked', '#'),
+  )
   if request.method == 'POST':
     date1 = request.POST['date']
     date = datetime.datetime.strptime(date1, '%d/%m/%Y').strftime('%Y-%m-%d')
@@ -89,7 +118,8 @@ def attendace_marked_view(request):
       'date': date,
       'subject': subject,
       'n_present': len(userModel_present_list),
-      'n_total': len(users)
+      'n_total': len(users),
+      "breadcrumbs": breadcrumbs,
     }
     return render(request, 'marked.html', context)
   return redirect('select-class-page')

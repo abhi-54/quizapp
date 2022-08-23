@@ -1,9 +1,15 @@
 {% extends "base_payment.html" %}
-{% block title %} - Allow a Quiz{% endblock %}
+
+{% block title %}Allow a Quiz{% endblock %}
 {% block content %}
 <style>
   .table td {width: 4rem;}
 </style>
+
+<h3 class="text-black mb-4">
+  Select Quiz to Allow
+</h3>
+
 <div>
   <table class="table table-bordered">
     <tr>
@@ -48,7 +54,7 @@
   </table>
   <br>
   <p>Select subjects to allow: </p>
-  <form action="/payment/submitted/" method="post">
+  <form action="/payment/" method="post">
     {% csrf_token %}
     {% for subject in subjects %}
     <input type="checkbox" name="subjects_to_allow_{{forloop.counter}}" id="subjects_to_allow" 

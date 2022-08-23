@@ -1,24 +1,16 @@
+{% extends 'base_quiz_panel.html' %}
 {% load static %}
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>
-    {% if request.path == '/payment/class/' %}
+
+{% block title %}
+{% if request.path == '/payment/class/' %}
       Payment 
     {% else %}
       Attendance
     {% endif %} 
     - {% block title %} {% endblock title %}
-  </title>
+{% endblock %}
 
-  <link rel="icon" href="{% static 'images/quiz_icon.png' %}">
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" 
-  integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
-  <style>
+<style>
     
 /* Custom Scrollbar */
 ::-webkit-scrollbar {width: 8px; overflow-x:hidden; height: 8px;}
@@ -47,7 +39,7 @@ button {
       position: relative;
     }
 }
-  </style>
+</style>
 </head>
 <body class="d-flex flex-column min-vh-100">
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">

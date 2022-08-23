@@ -115,8 +115,10 @@ def reges(request):
             if user is not None:
                 return redirect("Login")
         else:
+            msg = 'Something is wrong!'
             context = {
                 "form": form,
+                "msg": msg,
             }
             return render(request, "regestration.html", context=context)
 

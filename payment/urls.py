@@ -10,6 +10,6 @@ urlpatterns = [
   path('', payment_dashboard_view, name='payment-dashboard-page'),
   path('users/', paymentTemp, name='show-users-all'),
   path('quizAllow/', quizAllow, name='quiz-allow'),
-  path('submitted/', afterSubmit, name='submitted'),
+  #path('submitted/', afterSubmit, name='submitted'),
   path('class/', select_class_view, name='select-class-payment'),
 ]
