@@ -42,6 +42,18 @@
         border: 1px solid black;
       }
 
+      .error {
+        font-size: inherit;
+        color: initial;
+        position: unset;
+        line-height: initial;
+        width: inherit;
+      }
+
+      .error label, strong {
+        color: rgb(215, 0, 0)
+      }
+
       @media only screen and (max-width: 1000px) {
         #div_id_first_name {
           float: none;
@@ -74,39 +86,34 @@
     <div class="col-xl-10 col-lg-12 col-md-9">
       <div class="card o-hidden border-0 shadow-lg my-5">
         <div class="card-body p-0">
-          <!-- Nested Row within Card Body -->
-          
-          <div class="row">
-            
-            <div class="col-lg-6">
-              <div class="p-5">
-                <div>
-                  <h2>Register</h2>
-                  {% if msg %}
-                  <h5>msg</h5>
-                  {% endif %}
-                </div>
-                  <form
-                    method="post"
-                    action="/reges/"
-                  >
-                    {% csrf_token %} {{ form |crispy }}{{formext |crispy}}
-                    <hr />
-                    <input
-                      class="btn btn-success"
-                      type="submit"
-                      value="Create Account"
-                    />
-                  </form>
-                  <span>If you are already registered, <a href="/login/">click here to login</a>.</span>
-                </div>
-              <br />
+          <div class="p-5">
+            <div>
+              <h2>Register</h2>
+              {% if msg %}
+              <div class="alert alert-danger my-3 alert-dismissible fade show" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                {{ msg }}
+              </div>
+              {% endif %}
             </div>
+              <form
+                method="post"
+                action="/reges/"
+              >
+                {% csrf_token %} {{ form |crispy }}{{formext |crispy}}
+                <hr />
+                <input
+                  class="btn btn-success"
+                  type="submit"
+                  value="Create Account"
+                />
+              </form>
+              <span>If you are already registered, <a href="/login/">click here to login</a>.</span>
+          </div>
+              <br />
             <!-- <a class="btn btn-warning text-white text-xl-right" href="adminRegistration"
               >Register</a
             > -->
-             
-            </div>
           </div>
         </div>
       </div>

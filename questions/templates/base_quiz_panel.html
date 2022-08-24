@@ -212,6 +212,15 @@ ul hr {
   z-index: 25;
 }
 
+.navbar-nav {
+  flex-direction: row!important;
+}
+
+.navbar-collapse li {
+  display: flex;
+  align-items: center;
+}
+
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
@@ -287,18 +296,15 @@ ul hr {
           <button type="button" id="sidebarCollapse" class="btn btn-info">
             <i class="fas fa-align-left"></i>
           </button>
-          <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-align-justify"></i>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="navbar-collapse" id="navbarSupportedContent">
             <ul class="nav navbar-nav ml-auto text-black">
               {% for i in breadcrumbs %}
                 <li class="nav-item active">
                   <a class="nav-link" href="{{ i.1 }}">{{ i.0 }}</a>
+                  {% if forloop.counter != breadcrumbs|length %}
+                    <span class="mx-1">></span>
+                  {% endif %}
                 </li>
-                {% if forloop.counter != breadcrumbs|length %}
-                  <span style="display: flex;align-items: center;">></span>
-                {% endif %}
               {% endfor %}
             </ul>
           </div>
@@ -307,7 +313,7 @@ ul hr {
       
       <div class="p-3">
         {% if msg %}
-          {% if msg.0 == 'E' %}
+          {% if msg.0 == 'E' or msg.0 == 'A' %}
             <div class="alert alert-danger mb-3 alert-dismissible fade show" role="alert">
               <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
               {{ msg }}

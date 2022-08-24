@@ -108,14 +108,14 @@ def reges(request):
                 profile1.objects.filter(ref_code = entered_ref_code).update(reward_points = new_points)
         except profile1.DoesNotExist:
             pass
-        profile.save()
         if form.is_valid():
             user = form.save()
+            profile.save()
             #print(user)
             if user is not None:
                 return redirect("Login")
         else:
-            msg = 'Something is wrong!'
+            msg = 'Please correct the entered details!'
             context = {
                 "form": form,
                 "msg": msg,

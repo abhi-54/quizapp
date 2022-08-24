@@ -13,10 +13,18 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 @staff_member_required
 def select_class_view(request):
-  breadcrumbs = (
+  print(request.path)
+  if request.path == '/payment/class/':  
+    breadcrumbs = (
+      ('Home', '/panel/'),
+      ('Payment Alternative', '/payment/'),
+      ('Select Class', '/payment/class/'),
+    )
+  else:
+    breadcrumbs = (
       ('Home', '/panel/'),
       ('Attendance - Select Class', '/attendance/class/'),
-  )
+    )
   stds = stdchoice
   if request.path == '/payment/class/':
     title = 'Payment'

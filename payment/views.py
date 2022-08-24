@@ -58,26 +58,28 @@ def paymentTemp(request):
     userProfile = profile1.objects.filter(std = std)
     users = []
     stds = []
+    tempUserList = [u.username for u in User.objects.filter(is_superuser = False, is_staff = False)]
     for i in userProfile:
       user_name = i.get_username()
-      userModel = User.objects.get(username = user_name)
-      users.append(userModel)
-      stds.append(std)
+      # if the user is present in profile1 table but not in User table:
+      if user_name in tempUserList:
+        userModel = User.objects.get(username = user_name)
+        users.append(userModel)
+        stds.append(std)
+      else:
+        msg += f"Alert! User: @{user_name} is not present in 'User' table. Please create the user in 'User' table or delete the user from 'profile1' table!"   
   else:
+    tempProfile1List = [p.user for p in profile1.objects.all()]
     users = User.objects.filter(is_superuser = False, is_staff = False)
     stds = []
     for i in range(0, len(users)):
-      #print('----------------',i, users[i])
-      # if there is username problem or username doesn't exist in either profile1/User table:
-      try:
+      # if the user is present in User table but not in profile1 table:
+      if users[i].username in tempProfile1List:
         profile = profile1.objects.get(user = users[i].username)
         std = profile.get_std()
         stds.append(std)
-      except Exception as e:
-        temp = users.exclude(username = users[i])   # queryset will be copied and it will exclude the faulty username
-        msg = f'Exception has occured! Please delete or create user: @{users[i]} in either profile1 or User table'
-        pass
-    users = temp
+      else:
+        msg += f"Alert! User: @{users[i]} is not present in 'profile1' table. Please create the user in 'profile1' table or delete the user from 'User' table"
   context = {
     'users': users,
     'stds': stds,
