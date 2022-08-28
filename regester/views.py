@@ -150,29 +150,34 @@ def logout(request):
 	logout(request)
 	return redirect("Login")
 
-def pass_set_view(request):
-    if request.method == 'GET':
-        data = request.GET
-        if len(data) > 0:
-            print(len(data), data)
-            username = data['username']
-            if username == '' or username == None:
-                return render(request, 'pass_set.html')
+@login_required
+def pass_set_view(request, id):
+    if request.method == "GET":
+        username = User.objects.get(id = id)
+        if username == request.user:    # when different id is used while logged in
+            user = User.objects.get(username = username)
             reset_form = PasswordReset(user = username)
             context = {
-                'reset_form': reset_form
-            }
+                    'reset_form': reset_form,
+                    'username': user,
+                }
             return render(request, 'pass_set.html', context)
-    if request.method == 'POST':
-        username = request.GET['username']
-        #print('--post: ', request.POST, request.GET)
+        else:
+            return redirect("logout")
+    else:
+        username = User.objects.get(id = id)
         user = User.objects.get(username = username)
-        r_form = PasswordReset(user = user, data = request.POST)
-        if r_form.is_valid():
-            s = r_form.save()
+        reset_form = PasswordReset(user = user, data = request.POST)
+        if reset_form.is_valid():
+            s = reset_form.save()
             if s is not None:
                 return redirect('done-set-password-page')
-    return render(request, 'pass_set.html')
+        else:
+            context = {
+                'reset_form': reset_form,
+                'username': user
+            }
+            return render(request, 'pass_set.html', context)
 
 def done_setting_pass(request):
     return render(request, 'pass_set_done.html')

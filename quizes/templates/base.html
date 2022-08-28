@@ -73,15 +73,25 @@
         font-weight: 700;
       }
 
-      /* Custom Scrollbar */
-::-webkit-scrollbar {width: 8px; overflow-x:hidden; height: 8px;}
-::-webkit-scrollbar-track {background: #efc1bd}
-::-webkit-scrollbar-thumb {background: #b15b53;}
-::-webkit-scrollbar-thumb:hover {background: #ff1500;}
+      .text-dark {
+        color: black!important;
+      }
 
-#accordionSidebar.active {
-    margin-left: -100px;
-}
+      #accordionSidebar {
+        transition: margin-left 1s;
+      }
+
+      @media (max-width: 768px) {
+        #accordionSidebar.active {
+          margin-left: -100px;
+        }
+      }
+
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {width: 8px; overflow-x:hidden; height: 8px;}
+      ::-webkit-scrollbar-track {background: #efc1bd}
+      ::-webkit-scrollbar-thumb {background: #b15b53;}
+      ::-webkit-scrollbar-thumb:hover {background: #ff1500;}
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!--Script for toggling sidebar-->

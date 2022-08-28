@@ -156,6 +156,49 @@ ul.CTAs a {
     margin-bottom: 5px;
 }
 
+.table {
+  position: relative;
+}
+
+.table th {
+  background-color: rgba(10,10,10, 1);
+  color: white;
+  top: -1;
+  position: sticky;
+  z-index: 25;
+}
+
+.table tr:first-child:hover {
+  --bs-table-hover-bg: rgba(255, 255, 255, 0.9);
+}
+
+.displayDelete {
+  display: none;
+  margin-left: 3rem;
+}
+
+.darkmode, .darkmode .card, .darkmode .navbar {
+  background-color: rgb(40, 40, 40)!important;
+}
+
+.darkmode .navbar .fas, 
+.darkmode .nav .nav-link, 
+.darkmode .nav .nav-item,
+.darkmode h3,
+.darkmode .table,
+.darkmode form label {
+  color: rgb(200, 200, 200)!important;
+}
+
+.darkmode .shadow {
+  box-shadow: 0 .5rem 1rem rgba(150,150,150,0.4)!important;
+}
+
+.darkmode .table tr:hover {
+  --bs-table-hover-bg: rgba(20, 20, 20, 0.9);
+  --bs-table-hover-color: rgb(210,210,210);
+} 
+
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
@@ -237,7 +280,7 @@ ul hr {
     }
 }
 </style>
-<body>
+<body class="mode">
   <div class="wrapper">
     <!-- Sidebar  -->
     <nav id="sidebar" class="bg-dark text-white">
@@ -308,6 +351,9 @@ ul hr {
               {% endfor %}
             </ul>
           </div>
+          <button class="btn" type="button" onclick="toggleDarkMode()">
+            <i class="fas fa-sun"></i>
+          </button>
         </div>
       </nav>
       
@@ -386,7 +432,17 @@ ul hr {
   
 </body>
 
-
+<script>
+  function toggleDarkMode() {
+      $('.mode').toggleClass('darkmode');
+      let theme = document.getElementsByClassName('darkmode');
+      localStorage.setItem('mode', theme.length)
+  }
+  s = localStorage.getItem('mode');
+  if (s == 1 | s == "1") {
+    toggleDarkMode();
+  }
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>

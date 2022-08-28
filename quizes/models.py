@@ -1,31 +1,6 @@
 from django.db import models
 import random
-from regester.models import profile1
-# Create your models here.
-
-DIFF_CHOICES = (
-    ('Easy', 'Easy'),
-    ('Medium', 'Medium'),
-    ('Hard', 'Hard'),
-)
-stdchoice = (
-    ('3', '3'),
-    ('4', '4'),
-    ('5', '5'),
-    ('6', '6'),
-    ('7', '7'),
-    ('8', '8'),
-    ('9', '9'),
-    ('10', '10'),
-    ('11', '11'),
-    ('12', '12'), 
-    ('CET', 'CET'), 
-    ('JEE', 'JEE'), 
-    ('NEET', 'NEET'),
-    ('Navodaya Vidyalaya', 'Navodaya Vidyalaya') ,
-    ('12 COMBO', '12 COMBO'),
-
-)
+from regester.utils import stdchoice, DIFF_CHOICES
 
 class Subjects1(models.Model):
     name = models.CharField(max_length=120)

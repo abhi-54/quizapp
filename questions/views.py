@@ -7,6 +7,7 @@ from quizes.forms import SubjectForm, QuizForm
 from django.forms import inlineformset_factory
 from django.contrib.admin.views.decorators import staff_member_required
 from quizes.models import Quiz, Subjects1
+from django.db.utils import OperationalError
 
 # Create your views here.
 
@@ -39,8 +40,18 @@ def add_subject_view(request):
   }
   if request.method == 'POST':
     form = SubjectForm(request.POST)
-    if form.is_valid():
-      form.save()
+    subject_name = form['name'].value()
+    std = form['std'].value()
+    subject_model = Subjects1.objects.filter(std=std, name=subject_name)
+    print(subject_model, type(subject_model), len(subject_model))
+    if len(subject_model) >= 1:
+      msg = f"Alert! Subject '{subject_name}' already exits in Class '{std}'"
+      context['msg'] = msg
+    else:
+      if form.is_valid():
+        form.save()
+      else:
+        context['form'] = form
   return render(request, 'add_subject.html', context)
 
 @staff_member_required
@@ -58,6 +69,8 @@ def add_quiz_view(request):
     form = QuizForm(request.POST)
     if form.is_valid():
       form.save()
+    else:
+      context['form'] = form
   return render(request, 'add_quiz.html', context)
 
 @staff_member_required
@@ -83,7 +96,12 @@ def add_question_view(request):
       if Aform.is_valid():
         created_Qform.save()
         Aform.save()
-   
+      else:
+        msg = "Error!"
+        context['msg'] = msg
+    else:
+      msg = "Error!"
+      context['msg'] = msg
   return render(request, 'add_question.html', context)
 
 @staff_member_required
@@ -174,6 +192,7 @@ def display_Allquestions_view(request):
     'questions': questions
   }
   if request.POST:
+    msg = ''
     data = request.POST
     questID = data['qModel_id']   # Question ID
     qInstance = Question.objects.get(id=questID)   # Question Model Instance
@@ -188,7 +207,9 @@ def display_Allquestions_view(request):
         msg = f"Question #{questID} {qInstance} changed successfully !!"
       else:
         msg = f"Edit unsuccessful ! Please try again. If problem persists, contact admin."
-      context['msg'] = msg
+    else:
+      msg = f"Edit unsuccessful ! Please try again. If problem persists, contact admin."
+    context['msg'] = msg
   
   return render(request, 'allQuestions.html', context)
 

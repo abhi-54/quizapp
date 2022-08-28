@@ -7,29 +7,11 @@
 
 {% block content %}
 <style>
+
 tr th:first-child, td:first-child {
   width: 7rem;
 }
 
-.table {
-  position: relative;
-}
-
-.table th {
-  background-color: rgba(33,37,41, 1);
-  color: white;
-  top: -1;
-  position: sticky;
-  z-index: 25;
-}
-
-.table tr:first-child:hover {
-  --bs-table-hover-bg: rgba(255, 255, 255, 0.9);
-}
-
-.displayDelete {
-  display: none;
-}
 </style>
 
 <!--Table invert using jQuery-->
@@ -65,10 +47,9 @@ tr th:first-child, td:first-child {
 </h3>
 
 <form action="/panel/view-subjects/confirm-delete/" method="post">
-
-<div class="displayDelete" id="displayDelete">
-  <input class="btn btn-outline-danger mb-3" type="submit" value="Delete Selected">
-</div>
+  <div class="displayDelete" id="displayDelete">
+    <input class="btn btn-outline-danger mb-3" type="submit" value="Delete Selected">
+  </div>
 
 <table class="table table-hover" id="tableid">
   <tr>
@@ -80,7 +61,6 @@ tr th:first-child, td:first-child {
     {% endfor %}
   </tr>
 </form>
-
 
   <tr>
     <th>Sr. No.</th>

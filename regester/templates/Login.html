@@ -14,6 +14,10 @@
     padding: 0.2rem;
   }
 
+  .errorlist {
+    color: red;
+  }
+
   @media only screen and (max-width: 1000px) {
     .col-xl-10 .my-5 {
       margin-top: 0rem!important;
@@ -40,26 +44,11 @@
                 <div class="p-4 text-xl-center">
                   <form action="/login/" method="POST">
                     {% csrf_token %} {{form.as_p}}
-                    <div class="form-group">
-                    <div class="custom-control custom-checkbox small">
-                      <input
-                        type="checkbox"
-                        class="custom-control-input"
-                        id="customCheck"
-                      />
-                      <label class="custom-control-label" for="customCheck"
-                        >Remember Me</label
-                      >
-                    </div>
-                  </div>
                     <input type="submit" value="Login" class="btn btn-primary btn-userbtn-block" />
                   <br>
                 </div>
                 </form>
                 <hr />
-                <div class="text-center">
-                  <a class="small" href="/set_password/">Forgot Password?</a>
-                </div>
                 <div class="text-center">
                   <a class="small" href="/reges">Create an Account!</a>
                 </div>

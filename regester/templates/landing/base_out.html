@@ -111,6 +111,10 @@
   justify-content: space-evenly;
 }
 
+.m-display {
+  display: none;
+}
+
 @media (max-width: 768px) {
 		.custom-footer {
       position: relative;
@@ -125,6 +129,10 @@
     .nav-link {
       padding: 0.5rem!important;
     }
+
+    .m-display {
+      display: flex;
+    }
 }
   </style>
 </head>
@@ -136,6 +144,13 @@
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-controls="bs-example-navbar-collapse-1" aria-expanded="false" aria-label="Toggle navigation">
         <i class="fas fa-bars"></i>
       </button>
+      <ul class="m-display navbar-nav">
+        {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out"></i></a>
+          </li>
+        {% endif %}
+      </ul>
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <div class="d-lg-none d-flex justify-content-between px-4 py-3 align-items-center">
           <!-- <img src="{% static 'regester/images/quiz_img_login.png' %}" alt="img-logo" style="width: 90px; height: 40px;">

@@ -14,7 +14,7 @@ urlpatterns = [
     path('contact/', contact_page, name='contact-page-view'),
     path('login/',Login,name='Login'),
     path('question/', home_view, name = 'dashboard-view'),
-    path('set_password/', pass_set_view, name='set-password-page'),
+    path('set_password/<int:id>', pass_set_view, name='set-password-page'),
     path('set_password/done/', done_setting_pass, name='done-set-password-page'),
     re_path(r'^logout/$', LogoutView.as_view(), {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
 ]

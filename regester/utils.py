@@ -5,6 +5,13 @@ def generate_ref_code():
   ref_code = str(uuid4()).replace('-', '')[:12]
   return ref_code
 
+# choices for Quiz difficulty level
+DIFF_CHOICES = (
+    ('Easy', 'Easy'),
+    ('Medium', 'Medium'),
+    ('Hard', 'Hard'),
+)
+
 # choices for selecting standard
 stdchoice = (
     ('0', '0'),
@@ -24,3 +31,4 @@ stdchoice = (
     ('Navodaya Vidyalaya', 'Navodaya Vidyalaya') ,
     ('12 COMBO', '12COMBO'),
 )
+
