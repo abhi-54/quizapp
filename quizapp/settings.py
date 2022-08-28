@@ -28,7 +28,7 @@ LOGOUT_REDIRECT_URL = '/login/'
 SECRET_KEY = error
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 # SECURE_SSL_REDIRECT = True
 
 ALLOWED_HOSTS = [
