@@ -1,12 +1,14 @@
+from sqlite3 import OperationalError as cErrorSQLite
 from django.contrib.auth.models import User
-from django.db import models
+from django.db import OperationalError as cErrorDjango
 from django.shortcuts import render
+from psycopg2 import OperationalError as cErrorPostgre
 from payment.models import quizAccessTable
 from django.contrib.admin.views.decorators import staff_member_required
 from regester.models import profile1
 from .models import Quiz,Subjects1
 from django.views.generic import ListView
-from django.http import JsonResponse, request
+from django.http import JsonResponse
 from questions.models import Answer, Question
 from results.models import Result
 import datetime
@@ -14,6 +16,25 @@ from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
+
+def get_subjects(username):
+    msg_list, subjects_allowed, std_subjects, not_allowed_subjects = [], [], [], []
+    username = str(username)
+    profile = profile1.objects.get(user = username)
+    std = profile.std   # get the 'std' from profile1 table
+    users_list = [i.user for i in quizAccessTable.objects.filter(std = std)]    # create users list for checking if user exits in quizAccessTable
+    if username in users_list:
+        subjects_allowed = quizAccessTable.objects.get(user = username).subjects.split(', ')    # subjects which are allowed for the user
+        subjects_allowed = [s for s in subjects_allowed if s != '']
+        std_subjects = list(Subjects1.objects.filter(std = std))
+        if len(std_subjects) != 0:
+            subjects_allowed = [subject for subject in std_subjects if subject.__str__() in subjects_allowed]   # as Subjects1 model has to be passed and not just its name
+            not_allowed_subjects = [s for s in std_subjects if s not in subjects_allowed]
+        else:
+            msg_list.append(f"Alert! Subjects are not yet created for class {std}!")
+    else:
+        msg_list.append("Alert! Subjects are not yet allowed! Please contact Admin!")
+    return subjects_allowed, std_subjects, not_allowed_subjects, msg_list
 
 # custom error 404 page (works only when DEBUG = False)
 def error404_view(request, exception):
@@ -27,45 +48,16 @@ def all_links_view(request):
 @login_required
 def SubjectView(request):
     user = request.user
-    profile = profile1.objects.filter(user=user)
-    l = profile[0]
-    std = l.std
-    #print('std', std)
-    #print(request.user)
-    subjectslist = []
-    try:
-        quizAccess = quizAccessTable.objects.get(user = request.user)
-        subjects = quizAccess.subjects.split(', ')
-        for sub in subjects:
-            if sub == None or sub == '':
-                subjects.remove(sub)
-        # print(type(subjects), subjects)
-    except:
-        return render(request, 'showWarning.html') 
-    # print(quizAccess)
-    sub = Subjects1.objects.filter(std = std)
-    # i = Subjects1.objects.get(pk = sub)
-    # print("id: ",i)
-    allowedSub = []
-    for j in sub:
-        for d in subjects:
-            if str(j) == d:
-                #print("OK",type(j))
-                allowedSub.append(j)
-    notAllowedSub = []
-    for i in list(sub):
-        if i in allowedSub:
-            pass
-        else:
-            notAllowedSub.append(i)
+    subjects_allowed, std_subjects, not_allowed_subjects, msg_list = get_subjects(user)
     """""
     username: usertoday
     pass: S7WckwaWD_KTgQ.
     """
     context = {
-        "sub":sub,
-        "allowedSub":allowedSub,
-        "notAllowedSub": notAllowedSub,
+        "sub":std_subjects,
+        "allowedSub":subjects_allowed,
+        "notAllowedSub": not_allowed_subjects,
+        "msg_list": msg_list,
     }
     return render(request,'subjects.html',context)
 
@@ -82,9 +74,8 @@ def showSub(request,pk):
 @login_required
 def home_view(request):
     user = request.user
+    subjects_allowed, std_subjects, not_allowed_subjects, msg_list = get_subjects(user)
     profile = profile1.objects.get(user = user)
-    standard = f"{user}-{profile.get_std()}"
-    #print('home std: ', standard)
     # filtering result model according to user
     result = Result.objects.filter(user=user)   # required for chart display
 
@@ -109,20 +100,22 @@ def home_view(request):
     #print('users: ', details)
     score = []
     Quizname = []
-    count = 0
     for index, i  in enumerate(reversed(result)):
-        if count == 10:
+        if index == 10:
             break
         scoreRound = round(i.score, 2)
         score.append(scoreRound)
         Quizname.append(str(i.quiz))
-        count = count + 1
     context = {
         'x':score,
         'y':Quizname, 
         'top_scores': top_scores,
         'details': details,
         'top_users_quizname': top_users_quizname,
+        "sub":std_subjects,
+        "allowedSub":subjects_allowed,
+        "notAllowedSub": not_allowed_subjects,
+        "msg_list": msg_list,
     }
     return render(request, 'home.html',context=context)
     
@@ -175,17 +168,9 @@ def save_quiz_view(request, pk):
         topic = ' '.join(map(str, topic))
         data_.pop('csrfmiddlewaretoken')
         user = request.user
-        # if resultuser != 0:
-        #   print("already given test")
-        # else:
-        #print('data', data)
         for k in data_.keys():
             question = Question.objects.get(text=k)
-            
             questions.append(question)
-        
-
-        user = request.user
         quiz = Quiz.objects.get(pk=pk)
 
         score = 0
@@ -195,27 +180,27 @@ def save_quiz_view(request, pk):
 
         for q in questions:
             a_selected = request.POST.get(q.text)
-            if a_selected != "":
-                question_answers = Answer.objects.filter(question=q)
-                for a in question_answers:
-                    if a_selected == a.text:
-                        if a.correct:
-                            score += 1
-                            correct_answer = a.text
-                    else:
-                        if a.correct:
-                            correct_answer = a.text
-
-                results.append(
-                    {str(q): {'correct_answer': correct_answer, 'answered': a_selected}})
-            else:
-                results.append({str(q): 'not answered'})
+            question_answers = Answer.objects.filter(question=q)
+            for a in question_answers:
+                if a_selected == a.text:
+                    if a.correct:
+                        score += 1
+                        correct_answer = a.text
+                else:
+                    if a.correct:
+                        correct_answer = a.text
+                    if a_selected == "":
+                        a_selected = 'Not Answered'
+                        continue
+            results.append(
+                {str(q): {'correct_answer': correct_answer, 'answered': a_selected}})
 
         score_ = score * multiplier
         date1 = datetime.datetime.now().strftime(' %Y-%m-%d %H:%M:%S')
         profile = profile1.objects.get(user = user)
         standard = profile.get_std()
-        Result.objects.create(quiz=quiz, user=user, score=score_, date1=date1, std = standard)
+        result_summary = results
+        Result.objects.create(quiz=quiz, user=user, score=score_, date1=date1, std = standard, result_summary = result_summary)
 
         if score_ >= quiz.required_score_to_pass:
             return JsonResponse({'passed': True, 'score': score_, 'results': results})

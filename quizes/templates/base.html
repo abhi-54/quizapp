@@ -44,21 +44,51 @@
     <link
       href="{% static 'dashboard/css/sb-admin-2.min.css' %}"
       rel="stylesheet" />
-  </head>
 
-  <body id="page-top">
-    <script>
-      function hideLoader() {
-          $('#loading').hide();
-          $('.body').css({'opacity': '0.5'})
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+      </symbol>
+      <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+      </symbol>
+      <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+      </symbol>
+    </svg>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <style>
+      .blur{
+        -webkit-filter: blur(10px);
+        -moz-filter: blur(10px);
+        -o-filter: blur(10px);
+        -ms-filter: blur(10px);
+        filter: blur(1.5px);
+        background: #dcdcdc;
+        font-size: large;
+        font-weight: bolder;
       }
 
-      $(window).ready(hideLoader);
+      .blur a {
+          pointer-events: none;
+      }
 
-      // Strongly recommended: Hide loader after 20 seconds, even if the page hasn't finished loading
-      setTimeout(hideLoader, 20 * 1000);
-    </script>
-    <style>
+      .alert {
+        transition: display 1s;
+      }
+
+      .alertbox {
+        width: fit-content;
+        transition: display 1s;
+      }
+
+      .btn-close {
+        background: transparent;
+        border: none;
+      }
+
       #loading {
         background: url('{% static "spinner.gif" %}') no-repeat center center;
         position: absolute;
@@ -81,9 +111,70 @@
         transition: margin-left 1s;
       }
 
+      .darkmode, 
+      .darkmode .wrapper,
+      .darkmode .navbar-light,
+      .darkmode .bg-white,
+      .darkmode .card-header,
+      .darkmode #content,
+      .darkmode #content-wrapper {
+        background: rgb(40, 40, 40)!important;
+      }
+
+      .darkmode .card,
+      .darkmode .card-header {
+        border-color: transparent;
+        background: rgb(45, 45, 45)!important;
+      }
+
+      .darkmode input {
+        background: rgba(150,150,150,0.4);
+      }
+
+      .darkmode .text-dark,
+      .darkmode input,
+      .darkmode .h5,
+      .darkmode .tableprofile table,
+      .darkmode .tableclass {
+        color: rgb(200, 200, 200)!important;
+      }
+
+      .darkmode hr {
+        border-color: rgb(150, 150, 150)!important;
+      }
+
+      .darkmode .shadow {
+        box-shadow: 0 .5rem 1rem rgba(150,150,150,0.4)!important;
+      }
+
+      .darkmode .sticky-footer {
+        border-top: 1px solid rgb(150, 150, 150)!important;
+      }
+
+      .darkmode .bg-gradient-primary,
+      .darkmode .btn-primary {
+        background-color: rgba(245, 93, 80, 0.2);
+      }
+
+      .darkmode .card a:hover {
+        color: #ff3523;
+      }
+
       @media (max-width: 768px) {
         #accordionSidebar.active {
-          margin-left: -100px;
+          margin-left: -4.8rem;
+        }
+
+        .sidebar, .sidebar .nav-item .nav-link {
+          width: 5rem!important;
+        }
+
+        .ml-4, .mx-4 {
+          margin-left: 0.4rem!important;
+        }
+
+        .mr-4, .mx-4 {
+          margin-right: 0.4rem!important;
         }
       }
 
@@ -93,6 +184,21 @@
       ::-webkit-scrollbar-thumb {background: #b15b53;}
       ::-webkit-scrollbar-thumb:hover {background: #ff1500;}
     </style>
+  </head>
+
+  <body id="page-top" class="mode">
+    <script>
+      function hideLoader() {
+          $('#loading').hide();
+          $('.body').css({'opacity': '0.5'})
+      }
+
+      $(window).ready(hideLoader);
+
+      // Strongly recommended: Hide loader after 20 seconds, even if the page hasn't finished loading
+      setTimeout(hideLoader, 20 * 1000);
+    </script>
+  
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!--Script for toggling sidebar-->
     <script>
@@ -121,6 +227,14 @@
         <hr class="sidebar-divider my-0" />
 
         <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+          <a class="nav-link" href="/">
+            <i class="fas fa-home"></i>
+            <span>Go to Home</span>
+          </a>
+        </li>
+
+        <hr class="sidebar-divider my-0" />
         
         <li class="{% if request.path == '/question/' %} nav-item active {% else %} nav-item {% endif %}">
           <a class="nav-link" href="/question/">
@@ -128,17 +242,6 @@
             <span>Dashboard</span>
           </a>
         </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="/">
-            <i class="fas fa-home"></i>
-            <span>Go to Home</span>
-          </a>
-        </li>
-        
-
-        <!-- Divider -->
-        <hr class="sidebar-divider" />
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="{% if request.path == '/question/profile/' %} nav-item active {% else %} nav-item {% endif %}">
@@ -163,15 +266,12 @@
           </a>
         </li>
 
-        <!-- Divider -->
-        <hr class="sidebar-divider" />
-
         <!-- Nav Item - Charts -->
         <li class="{% if request.path == '/question/chart/' %} nav-item active {% else %} nav-item {% endif %}">
           <a class="nav-link" href="/question/chart/">
             <i class="fas fa-fw fa-chart-area"></i>
-            <span>Charts</span></a
-          >
+            <span>Charts</span>
+          </a>
         </li>
 
         <!-- Divider -->
@@ -206,6 +306,11 @@
               <div class="topbar-divider d-none d-sm-block"></div>
 
               <!-- Nav Item - User Information -->
+              <li class="nav-item" style="display: flex;">
+                <button class="btn" type="button" onclick="toggleDarkMode()">
+                  <i class="fas fa-sun"></i>
+                </button>
+              </li>
               <li class="nav-item dropdown no-arrow">
                 <a
                   class="nav-link dropdown-toggle"
@@ -255,6 +360,36 @@
             </ul>
           </nav>
           <!-- End of Topbar -->
+          <div class="mx-4 alertbox">
+            {% if msg_list %}
+              {% for msg in msg_list %}
+                {% if msg.0 == 'E' or msg.0 == 'A' %}
+                  <div class="alert alert-danger mb-3 alert-dismissible fade show" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                    {{ msg }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="closeAlert()"><i class="fas fa-times"></i></button>
+                  </div>
+                {% else %}
+                  <div class="alert alert-success mb-3 alert-dismissible fade show" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                    {{ msg }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="closeAlert()"><i class="fas fa-times"></i></button>
+                  </div>
+                {% endif %}
+                
+                <script>
+                  function closeAlert() {
+                    document.getElementsByClassName('alert').style.display = 'none';
+                    document.getElementsByClassName('alertbox').style.display = 'none';
+                  }
+
+                  $(".alert-success").fadeTo(10000, 500).slideUp(500, function() {
+                    $(".alert-success").slideUp(500);
+                  });
+                </script>
+              {% endfor %}
+            {% endif %}
+          </div>
           {% block content %} {% endblock content %}
         </div>
         <!-- End of Main Content -->
@@ -313,24 +448,37 @@
         </div>
       </div>
     </div>
-
-    <!-- Bootstrap core JavaScript-->
-    <script src="{% static 'dashboard/vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'dashboard/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="{% static 'dashboard/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="{% static 'dashboard/js/sb-admin-2.min.js' %}"></script>
-
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-      crossorigin="anonymous"></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-      crossorigin="anonymous"></script>
   </body>
+
+  <script>
+    // script for Dark Mode
+    function toggleDarkMode() {
+        $('.mode').toggleClass('darkmode');
+        let theme = document.getElementsByClassName('darkmode');
+        localStorage.setItem('mode', theme.length)
+    }
+    s = localStorage.getItem('mode');
+    if (s == 1 | s == "1") {
+      toggleDarkMode();
+    }
+  </script>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'dashboard/vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'dashboard/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'dashboard/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'dashboard/js/sb-admin-2.min.js' %}"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" 
+    integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" 
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" 
+    integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" 
+    crossorigin="anonymous"></script>
+    
 </html>

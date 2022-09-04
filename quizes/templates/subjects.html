@@ -12,7 +12,7 @@
   -moz-filter: blur(10px);
   -o-filter: blur(10px);
   -ms-filter: blur(10px);
-  filter: blur(1.5px);
+  filter: blur(1px);
   background: #dcdcdc;
   font-size: large;
   font-weight: bolder;
@@ -22,17 +22,28 @@
 }
 </style>
 
-<h4 class="m-5">Subjects</h4>
-    {% for subject in allowedSub %} 
-        <div class="card shadow p-4 m-5">
-            <a href = "/question/show/{{subject.pk}}/" name = "{{subject}}">{{subject}}</a>
-        </div>
-    {% endfor %} 
+<div class="m-4">
+    <h4 class="text-dark">Subjects</h4>
+    <div class="row mt-1">
+        {% for subject in allowedSub %} 
+            <div class="col-xl-3 col-md-6 p-3"> 
+              <div class="card shadow p-3">
+                <a href = "/question/show/{{subject.pk}}/" name = "{{subject}}">{{subject}}</a>
+              </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="row mt-1"> 
         <!--Blur this content-->
-     {% for nsub in notAllowedSub %}
-        <div class="card shadow p-4 m-5 blur">
-            <a href = "/question/show/{{nsub.pk}}/" name = "{{nsub}}">{{nsub}}</a>
-        </div>
-    {% endfor %}       
+         {% for nsub in notAllowedSub %}
+            <div class="col-xl-3 col-md-6 p-3"> 
+              <div class="card shadow p-3 blur">
+                <a href = "" name = "{{subject}}">{{nsub}}</a>
+              </div>
+            </div>
+        {% endfor %}     
+    </div>  
+</div>
 
 {% endblock content %}

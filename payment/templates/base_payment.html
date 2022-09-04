@@ -4,16 +4,7 @@
 {% load static %}
 
 <style>
-.paydiv a, .paydiv li {
-  color: var(--colorA);
-  font-weight: 500;
-}
 
-.paydiv a:hover {
-  font-weight: 550;
-  color: var(--colorH);
-  text-decoration: underline;
-}
 </style>
 
 <h3 class="text-black mb-4">
@@ -22,7 +13,7 @@
 
 <div class="container paydiv mt-5">
   {% if request.path == '/payment/' %}
-  <ul class="mt-3">
+  <ul class="mt-3 anchor">
     <li>
       <a href="/payment/users/">View All Users</a>
     </li>

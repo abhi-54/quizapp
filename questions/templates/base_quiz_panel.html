@@ -111,8 +111,9 @@ a:focus {
 }
 
 #sidebar ul li a {
-    padding: 10px;
+    padding: 0.4rem;
     display: block;
+    margin-left: 0.4rem;
 }
 
 #sidebar ul li a:hover {
@@ -177,11 +178,23 @@ ul.CTAs a {
   margin-left: 3rem;
 }
 
+.anchor a, .anchor li {
+  color: var(--colorA);
+  font-weight: 500;
+}
+
+.anchor a:hover {
+  font-weight: 550;
+  color: var(--colorH);
+  text-decoration: underline;
+}
+
 .darkmode, .darkmode .card, .darkmode .navbar {
   background-color: rgb(40, 40, 40)!important;
 }
 
 .darkmode .navbar .fas, 
+.darkmode .block-content hr,
 .darkmode .nav .nav-link, 
 .darkmode .nav .nav-item,
 .darkmode h3,
@@ -329,6 +342,13 @@ ul hr {
         <li class="{% if request.path == '/panel/view-questions/' %} active {% endif %}">
           <a href="/panel/view-questions/">View Questions</a>
         </li>
+        <hr>
+        <li class="unhover">
+          <a class="disabled">Student</a>
+        </li>
+        <li class="{% if request.path == '/panel/student/' %} active {% endif %}">
+          <a href="/panel/student/">View Students</a>
+        </li>
       </ul>
     </nav>
 
@@ -357,7 +377,7 @@ ul hr {
         </div>
       </nav>
       
-      <div class="p-3">
+      <div class="block-content p-3">
         {% if msg %}
           {% if msg.0 == 'E' or msg.0 == 'A' %}
             <div class="alert alert-danger mb-3 alert-dismissible fade show" role="alert">
@@ -393,6 +413,13 @@ ul hr {
               <div class="card shadow h-100 p-3">
                 <a class="btn btn-outline-primary mt-2" href="/payment/">
                   <b>Payment Alternative</b>
+                </a>
+              </div>
+            </div>
+            <div class="col-xl-auto col-md-6 mb-5">
+              <div class="card shadow h-100 p-3">
+                <a class="btn btn-outline-primary mt-2" href="/panel/student/">
+                  <b>Students Profile</b>
                 </a>
               </div>
             </div>
@@ -433,6 +460,7 @@ ul hr {
 </body>
 
 <script>
+  // script for Dark Mode
   function toggleDarkMode() {
       $('.mode').toggleClass('darkmode');
       let theme = document.getElementsByClassName('darkmode');

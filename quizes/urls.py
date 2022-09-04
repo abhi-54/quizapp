@@ -1,5 +1,3 @@
-
-from django.conf.urls import handler404
 from django.urls import path
 from regester.views import profile_view
 
@@ -10,13 +8,11 @@ from .views import (
     quiz_view,
     quiz_data_view,
     save_quiz_view,
-    userShowResult,
     dashboard_view,
     chart_view,
     SubjectView,
     showSub,
     )
-
 
 app_name = 'quizes'
 

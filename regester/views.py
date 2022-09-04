@@ -92,26 +92,25 @@ def reges(request):
     else:
         #print(request.POST)
         form = FormRegestration(request.POST)
-        profile = profile1()
-        profile.user = request.POST['username']
-        profile.std = request.POST['std']
-        try:
-            entered_ref_code = request.POST['enter_ref_code']
-        except MultiValueDictKeyError:
-            entered_ref_code = None
-        try:
-            if entered_ref_code != None or entered_ref_code != '':
-                profile_ref = profile1.objects.get(ref_code = entered_ref_code)
-                profile.referred_by = profile_ref.user
-                pre_points = profile_ref.get_reward_points()
-                new_points = int(pre_points) + 10
-                profile1.objects.filter(ref_code = entered_ref_code).update(reward_points = new_points)
-        except profile1.DoesNotExist:
-            pass
         if form.is_valid():
+            profile = profile1()
+            profile.std = request.POST['std']
+            try:
+                entered_ref_code = request.POST['enter_ref_code']
+            except MultiValueDictKeyError:
+                entered_ref_code = None
+            try:
+                if entered_ref_code != None or entered_ref_code != '':
+                    profile_ref = profile1.objects.get(ref_code = entered_ref_code)
+                    profile.referred_by = profile_ref.user
+                    pre_points = profile_ref.get_reward_points()
+                    new_points = int(pre_points) + 10
+                    profile1.objects.filter(ref_code = entered_ref_code).update(reward_points = new_points)
+            except profile1.DoesNotExist:
+                pass
             user = form.save()
+            profile.user = user
             profile.save()
-            #print(user)
             if user is not None:
                 return redirect("Login")
         else:

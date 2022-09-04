@@ -20,16 +20,24 @@ def select_class_view(request):
       ('Payment Alternative', '/payment/'),
       ('Select Class', '/payment/class/'),
     )
-  else:
+  elif request.path == '/attendance/class/':
     breadcrumbs = (
       ('Home', '/panel/'),
       ('Attendance - Select Class', '/attendance/class/'),
     )
+  elif request.path == '/panel/student/class/':
+    breadcrumbs = (
+      ('Home', '/panel/'),
+      ('Student Profile', '/student/'),
+      ('Select Class', '/student/class/'),
+    )
   stds = stdchoice
   if request.path == '/payment/class/':
     title = 'Payment'
-  else:
+  elif request.path == '/attendance/class/':
     title = 'Attendance'
+  elif request.path == '/panel/student/class/':
+    title = 'Student Profiles'
   context = {
       "stds": stds,
       "title": title,

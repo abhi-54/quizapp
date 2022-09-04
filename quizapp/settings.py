@@ -31,6 +31,10 @@ SECRET_KEY = error
 DEBUG = True
 # SECURE_SSL_REDIRECT = True
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://quizes-web-app.herokuapp.com'
+]
+
 ALLOWED_HOSTS = [
     '*',
     'quizes-web-app.herokuapp.com',

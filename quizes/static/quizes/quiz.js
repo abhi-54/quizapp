@@ -153,12 +153,7 @@ const sendData = () => {
                     resDiv.innerHTML += question
                     const cls = ['container', 'p-3', 'text-light', 'h6']
                     resDiv.classList.add(...cls)
-
-                    if (resp == 'not answered') {
-                        resDiv.innerHTML += ' --> Not Answered'
-                        resDiv.classList.add('bg-danger')
-                    }
-                    else {
+                    
                         const answer = resp['answered']
                         const correct = resp['correct_answer']
                         // console.log(answer,correct)
@@ -171,7 +166,7 @@ const sendData = () => {
                             resDiv.innerHTML += ` | Correct Answer: ${correct}`
                             resDiv.innerHTML += ` | Answered: ${answer}`
                         }
-                    }
+                    
                 }
                 // const body = document.getElementsByTagName('BODY')[0]
                 resultBox.append(resDiv)

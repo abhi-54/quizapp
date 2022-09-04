@@ -10,7 +10,22 @@
 
 {% block content %}
 
-<h4 class="m-5">Quizes</h4>
+<style>
+.card hr {
+	margin-top: 0rem!important;
+	margin-bottom: 0rem!important;
+}
+
+.modal-content, .text-muted {
+	color: black!important;
+}
+
+.card-title {
+	font-weight: 600;
+}
+</style>
+
+<h4 class="m-4 text-dark">Quizes</h4>
 
 <!-- Modal -->
 <div class="modal fade" id="quizStartModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -32,28 +47,34 @@
     </div>
   </div>
 
-	{% for obj in quiz %}
-	<div class="card shadow p-4 m-5">
-		<div class="card-title text-dark">
-			{{ obj }}
+	<div class="row mx-4">
+		{% for obj in quiz %}
+		<div class="col-xl-4 col-md-6 p-1">
+			<div class="card shadow p-4 m-2">
+				<div class="card-title text-dark">
+					{{ obj }}
+				</div>
+				<hr>
+				<div class="card-body text-dark">
+					<p>Number of Questions: {{obj.number_of_questions}}</p>
+					<p>Score to Pass: {{obj.required_score_to_pass}}%</p>
+					<p>Difficulty: {{obj.difficulty}}</p>
+					<p>Time (minutes): {{ obj.time }}</p>
+				</div>
+				<div class="text-right text-dark">
+					<button class="btn btn-success modal-button" 
+					data-qID="{{quiz.id}}"
+					data-pk="{{obj.pk}}"
+					data-quiz="{{obj.name}}"
+					data-questions="{{obj.number_of_questions}}"
+					data-difficulty="{{obj.difficulty}}"
+					data-time="{{obj.time}}"
+					data-pass="{{obj.required_score_to_pass}}"
+					data-toggle="modal" data-target="#quizStartModal">Start</button>
+				</div>
+			</div>
 		</div>
-		<div class="card-body">
-			<p>Score to Pass: {{obj.required_score_to_pass}}%</p>
-			<p>Time (minutes): {{ obj.time }}</p>
-		</div>
-		<div class="text-right">
-			<button class="btn btn-success modal-button" 
-			data-qID="{{quiz.id}}"
-			data-pk="{{obj.pk}}"
-			data-quiz="{{obj.name}}"
-			data-questions="{{obj.number_of_questions}}"
-			data-difficulty="{{obj.difficulty}}"
-			data-time="{{obj.time}}"
-			data-pass="{{obj.required_score_to_pass}}"
-			data-toggle="modal" data-target="#quizStartModal">Start</button>
-		</div>
+		{% endfor %}
 	</div>
-	
-	{% endfor %}
 
 {% endblock content %}

@@ -302,3 +302,14 @@ def modify_question_view(request):
     }
     return render(request, 'modify_question.html', context)
   return redirect('view-questions-page')
+
+@staff_member_required
+def students_view(request):
+  breadcrumbs = (
+      ('Home', '/panel/'),
+      ('Students Profile', '/panel/students/')
+    )
+  context = {
+    'breadcrumbs': breadcrumbs,
+  }
+  return render(request, 'students.html', context) 

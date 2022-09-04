@@ -1,12 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import User
 from .utils import stdchoice, generate_ref_code
-
-
-# Create your views here.
+from django.contrib.auth.models import User
 
 class profile1(models.Model):
-    user = models.CharField(max_length = 150, unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, to_field='username')
+    #user = models.CharField(max_length = 150, unique=True)
     std = models.CharField(max_length=20, choices=stdchoice, default='')
     ref_code = models.CharField(max_length=12, blank=True, unique=True)
     reward_points = models.IntegerField(default=0)

@@ -1,6 +1,7 @@
 from unicodedata import name
 from django.urls import path
 from .views import *
+from attendance.views import select_class_view
 
 urlpatterns = [
   path('', custom_admin, name='admin-panel-page'),
@@ -15,4 +16,6 @@ urlpatterns = [
   path('view-questions/', display_questions_view, name='view-questions-page'),
   path('view-questions/all/', display_Allquestions_view, name='view-Allquestions-page'),
   path('view-questions/modify/', modify_question_view, name='modify-question-page'),
+  path('student/', students_view, name='students-page'),
+  path('student/class/', select_class_view, name='students-class-page'),
 ]

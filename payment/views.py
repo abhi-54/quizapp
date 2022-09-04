@@ -67,14 +67,19 @@ def paymentTemp(request):
         users.append(userModel)
         stds.append(std)
       else:
-        msg += f"Alert! User: @{user_name} is not present in 'User' table. Please create the user in 'User' table or delete the user from 'profile1' table!"   
+        if request.user in User.objects.filter(is_superuser = True, is_staff = True):   # if user is admin
+          continue
+        else:
+          msg += f"Alert! User: @{user_name} is not present in 'User' table. Please create the user in 'User' table or delete the user from 'profile1' table!"   
   else:
     tempProfile1List = [p.user for p in profile1.objects.all()]
     users = User.objects.filter(is_superuser = False, is_staff = False)
+    print('----profiles--------', tempProfile1List)
+    print('-----User-------', users)
     stds = []
     for i in range(0, len(users)):
       # if the user is present in User table but not in profile1 table:
-      if users[i].username in tempProfile1List:
+      if users[i] in tempProfile1List:
         profile = profile1.objects.get(user = users[i].username)
         std = profile.get_std()
         stds.append(std)
