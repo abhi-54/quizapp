@@ -1,5 +1,3 @@
-from multiprocessing import context
-from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from questions.forms import AnswerForm, QuestionForm
 from questions.models import Answer, Question
@@ -7,7 +5,8 @@ from quizes.forms import SubjectForm, QuizForm
 from django.forms import inlineformset_factory
 from django.contrib.admin.views.decorators import staff_member_required
 from quizes.models import Quiz, Subjects1
-from django.db.utils import OperationalError
+from regester.models import profile1
+from results.models import Result
 
 # Create your views here.
 
@@ -313,3 +312,29 @@ def students_view(request):
     'breadcrumbs': breadcrumbs,
   }
   return render(request, 'students.html', context) 
+
+@staff_member_required
+def select_student_view(request):
+  if request.POST:
+    breadcrumbs = (
+      ('Home', '/panel/'),
+      ('Student Profile', '/student/'),
+      ('Select Class', '/student/class/'),
+      ('Select Student', '#'),
+    )
+    std = request.POST['btn']
+    students_profile_list = profile1.objects.filter(std=std)
+    students_list = []
+    for student in students_profile_list:
+      result_table = Result.objects.filter(profile = student)
+      student_dictionary = {
+        'student': student,
+        'student_results': len(result_table),
+      }
+      students_list.append(student_dictionary)
+    context = {
+      'breadcrumbs': breadcrumbs,
+      'students_list': students_list,
+    }
+    return render(request, 'select_student.html', context)
+  return redirect('students-class-page')

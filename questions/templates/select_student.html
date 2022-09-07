@@ -1,0 +1,71 @@
+{% extends 'base_quiz_panel.html' %}
+
+{% load static %}
+{% block title %} Select Student {% endblock title %}
+
+{% block content %}
+
+<!-- Script to invert table -->
+<script>
+  function toggleView() {
+    $("#tableid").each(function () {
+      var $this = $(this);
+      var newrows = [];
+      $this.find("tr").each(function () {
+        var i = 0;
+        $(this).find("td,th").each(function () {
+          i++;
+          if (newrows[i] === undefined) {
+            newrows[i] = $("<tr></tr>");
+          }
+          newrows[i].append($(this));
+        });
+      });
+      $this.find("tr").remove();
+      $.each(newrows, function () {
+        $this.append(this);
+      });
+    });
+    return false;
+  }
+  window.onload = toggleView;
+</script>
+
+<div class="select-student-div">
+  <table class="table table-hover" id="tableid">
+    <tr>
+      <th>Username</th>
+      {% for i in students_list %}
+        <td>
+          <span>
+            {{ i.student.user }}
+          </span>
+        </td>
+      {% endfor %}
+    </tr>
+
+    <tr>
+      <th>Name</th>
+      {% for i in students_list %}
+        <td>
+          <span>
+            {{ i.student.user.first_name }} {{ i.student.user.last_name }}
+          </span>
+        </td>
+      {% endfor %}
+    </tr>
+
+    <tr>
+      <th>Tests Given</th>
+      {% for i in students_list %}
+        <td>
+          <span>
+            {{ i.student_results }}
+          </span>
+        </td>
+      {% endfor %}
+    </tr>
+  </table>
+</div>
+
+{% endblock %}

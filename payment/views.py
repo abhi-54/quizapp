@@ -15,6 +15,9 @@ def payment_dashboard_view(request):
       ('Home', '/panel/'),
       ('Payment Alternative', '/payment/'),
   )
+  context = {
+    'breadcrumbs': breadcrumbs,
+  }
   if request.method == 'POST':
     #print('after-----:', request.POST)
     username = request.POST['user']
@@ -36,13 +39,8 @@ def payment_dashboard_view(request):
       quizAccessTable.objects.filter(user = username).update(subjects = strSubjects, std = std)
     #print(username, std)
     msg = f'Subjects allowed successfully for the user @{username}'
-    context = {
-      'msg': msg,
-    }
-    return render(request, 'base_payment.html', context = context)
-  context = {
-    'breadcrumbs': breadcrumbs,
-  }
+    context['msg'] = msg
+    return render(request, 'base_payment.html', context)
   return render(request, 'base_payment.html', context)
 
 @staff_member_required

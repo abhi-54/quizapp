@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 
 class profile1(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, to_field='username')
-    #user = models.CharField(max_length = 150, unique=True)
     std = models.CharField(max_length=20, choices=stdchoice, default='')
     ref_code = models.CharField(max_length=12, blank=True, unique=True)
     reward_points = models.IntegerField(default=0)

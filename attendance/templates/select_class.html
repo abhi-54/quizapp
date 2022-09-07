@@ -10,18 +10,18 @@
 
 <h3>Select Class</h3>
 {% if request.path == '/payment/class/' %}
-<form action="/payment/users/" method="post" class="mt-3">
+  <form action="/payment/users/" method="post" class="mt-3">
+{% elif request.path == '/panel/student/class/' %}
+  <form action="/panel/student/class/select-student/" method="post" class="mt-3">
 {% else %}
-<form action="/attendance/class/subject/" method="post" class="mt-3">
+  <form action="/attendance/class/subject/" method="post" class="mt-3">
 {% endif %}
-  {% csrf_token %}
-  {% for std in stds %}
-    <button class="btn btn-outline-info" name="btn" value='{{ std.0 }}'>
-      {{ std.0 }}
-    </button>
-  {% endfor %}
-</form>
-
-
+    {% csrf_token %}
+    {% for std in stds %}
+      <button class="btn btn-outline-info" name="btn" value='{{ std.0 }}'>
+        {{ std.0 }}
+      </button>
+    {% endfor %}
+  </form>
 
 {% endblock content %}

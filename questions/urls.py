@@ -18,4 +18,5 @@ urlpatterns = [
   path('view-questions/modify/', modify_question_view, name='modify-question-page'),
   path('student/', students_view, name='students-page'),
   path('student/class/', select_class_view, name='students-class-page'),
+  path('student/class/select-student/', select_student_view, name='select-student-page'),
 ]
