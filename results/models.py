@@ -15,7 +15,7 @@ class Result(models.Model):
     date  = models.DateTimeField( auto_now_add=True,null = True , blank = True, editable=False)
     date1 = models.CharField(max_length = 150,null = True , blank = True, editable=False)
     std = models.CharField(max_length=30, null=True, blank=True, editable=False)
-    result_summary = models.TextField(null=True, blank=True, editable=False)
+    result_summary = models.JSONField(null=True, blank=True, editable=False)
 
     def __str__(self):
         return f"{self.user}-{self.quiz}"

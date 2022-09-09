@@ -11,22 +11,25 @@ from django.views.generic import ListView
 from django.http import JsonResponse
 from questions.models import Answer, Question
 from results.models import Result
-import datetime
+import datetime, json
 from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
+class doubleQuote_dict(dict):
+    def __str__(self):
+        return json.dumps(self)
 
 def get_subjects(username):
     msg_list, subjects_allowed, std_subjects, not_allowed_subjects = [], [], [], []
     username = str(username)
     profile = profile1.objects.get(user = username)
     std = profile.std   # get the 'std' from profile1 table
-    users_list = [i.user for i in quizAccessTable.objects.filter(std = std)]    # create users list for checking if user exits in quizAccessTable
+    std_subjects = list(Subjects1.objects.filter(std = std))
+    users_list = [i.user.username for i in quizAccessTable.objects.filter(std = std)]    # create users list for checking if user exits in quizAccessTable
     if username in users_list:
         subjects_allowed = quizAccessTable.objects.get(user = username).subjects.split(', ')    # subjects which are allowed for the user
         subjects_allowed = [s for s in subjects_allowed if s != '']
-        std_subjects = list(Subjects1.objects.filter(std = std))
         if len(std_subjects) != 0:
             subjects_allowed = [subject for subject in std_subjects if subject.__str__() in subjects_allowed]   # as Subjects1 model has to be passed and not just its name
             not_allowed_subjects = [s for s in std_subjects if s not in subjects_allowed]
@@ -177,7 +180,7 @@ def save_quiz_view(request, pk):
         multiplier = 100 / quiz.number_of_questions
         results = []
         correct_answer = None
-
+        result_details = {}
         for q in questions:
             a_selected = request.POST.get(q.text)
             question_answers = Answer.objects.filter(question=q)
@@ -192,6 +195,7 @@ def save_quiz_view(request, pk):
                     if a_selected == "":
                         a_selected = 'Not Answered'
                         continue
+            result_details[str(q)] = {'correct_answer': correct_answer, 'answered': a_selected}
             results.append(
                 {str(q): {'correct_answer': correct_answer, 'answered': a_selected}})
 
@@ -199,7 +203,7 @@ def save_quiz_view(request, pk):
         date1 = datetime.datetime.now().strftime(' %Y-%m-%d %H:%M:%S')
         profile = profile1.objects.get(user = user)
         standard = profile.get_std()
-        result_summary = results
+        result_summary = doubleQuote_dict(result_details)   # as JSON uses double quotes
         Result.objects.create(quiz=quiz, user=user, score=score_, date1=date1, std = standard, result_summary = result_summary)
 
         if score_ >= quiz.required_score_to_pass:

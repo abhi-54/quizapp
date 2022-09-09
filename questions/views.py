@@ -1,4 +1,7 @@
+from unittest import result
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from payment.models import quizAccessTable
 from questions.forms import AnswerForm, QuestionForm
 from questions.models import Answer, Question
 from quizes.forms import SubjectForm, QuizForm
@@ -7,6 +10,8 @@ from django.contrib.admin.views.decorators import staff_member_required
 from quizes.models import Quiz, Subjects1
 from regester.models import profile1
 from results.models import Result
+from django.contrib.auth.models import User
+from quizes.views import get_subjects
 
 # Create your views here.
 
@@ -42,7 +47,6 @@ def add_subject_view(request):
     subject_name = form['name'].value()
     std = form['std'].value()
     subject_model = Subjects1.objects.filter(std=std, name=subject_name)
-    print(subject_model, type(subject_model), len(subject_model))
     if len(subject_model) >= 1:
       msg = f"Alert! Subject '{subject_name}' already exits in Class '{std}'"
       context['msg'] = msg
@@ -87,7 +91,6 @@ def add_question_view(request):
     'breadcrumbs': breadcrumbs
   }
   if request.method == 'POST':
-    print(request.POST)
     Qform = QuestionForm(request.POST)
     if Qform.is_valid():
       created_Qform = Qform.save(commit=False)
@@ -318,8 +321,8 @@ def select_student_view(request):
   if request.POST:
     breadcrumbs = (
       ('Home', '/panel/'),
-      ('Student Profile', '/student/'),
-      ('Select Class', '/student/class/'),
+      ('Student Profile', '/panel/student/'),
+      ('Select Class', '/panel/student/class/'),
       ('Select Student', '#'),
     )
     std = request.POST['btn']
@@ -328,7 +331,7 @@ def select_student_view(request):
     for student in students_profile_list:
       result_table = Result.objects.filter(profile = student)
       student_dictionary = {
-        'student': student,
+        'student': student,   # profile1 object
         'student_results': len(result_table),
       }
       students_list.append(student_dictionary)
@@ -338,3 +341,66 @@ def select_student_view(request):
     }
     return render(request, 'select_student.html', context)
   return redirect('students-class-page')
+
+@staff_member_required
+def show_student_info_view(request, id):
+  breadcrumbs = (
+    ('Home', '/panel/'),
+    ('Student Profile', '/panel/student/'),
+    ('Select Class', '/panel/student/class/'),
+    ('Select Student', '/panel/student/class/select-student/'),
+    ('Student Information', '#'),
+  )
+  user = User.objects.get(id=id)
+  profile = profile1.objects.get(user=user)
+  result_table = Result.objects.filter(user=user)
+  for i in result_table:
+    sum = i.result_summary
+    if sum != None:
+      print(type(sum))
+  subjects_allowed, std_subjects, not_allowed_subjects, msg_list = get_subjects(user.username)
+  context = {
+    'breadcrumbs': breadcrumbs,
+    'result_table': result_table,
+    'subjects_allowed': subjects_allowed,
+    'std_subjects': std_subjects
+  }
+  return render(request, 'student_info.html', context)
+
+def display_summary(request, id):
+  breadcrumbs = (
+    ('Home', '/panel/'),
+    ('Student Profile', '/panel/student/'),
+    ('Select Class', '/panel/student/class/'),
+    ('Select Student', '/panel/student/class/select-student/'),
+    ('Student Information', '#'),
+  )
+  result_table = Result.objects.get(id=id)
+  user = User.objects.get(username=result_table.user)
+  profile = profile1.objects.get(user=user)
+  result_tables = Result.objects.filter(user=user)
+  subjects_allowed, std_subjects, not_allowed_subjects, msg_list = get_subjects(user.username)
+  
+
+  # ------------------------------------
+  result_table = Result.objects.get(id=id)
+  summary = result_table.result_summary   # dictionary
+  
+  questions = []
+  correct_answers = []
+  answered = []
+  if summary != None or summary == '':
+    for k, v in summary.items():
+      questions.append(k)
+      correct_answers.append(v['correct_answer'])
+      answered.append(v['answered'])
+  context = {
+    'breadcrumbs': breadcrumbs,
+    'result_table': result_tables,
+    'subjects_allowed': subjects_allowed,
+    'std_subjects': std_subjects,
+    'questions': questions,
+    'correct_answers': correct_answers,
+    'answered': answered
+  }
+  return render(request, 'display.html', context)

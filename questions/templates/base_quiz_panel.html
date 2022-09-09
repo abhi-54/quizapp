@@ -112,9 +112,8 @@ a:focus {
 }
 
 #sidebar ul li a {
-    padding: 0.4rem;
+    padding: 0.6rem;
     display: block;
-    margin-left: 0.4rem;
 }
 
 #sidebar ul li a:hover {
@@ -190,7 +189,9 @@ ul.CTAs a {
   text-decoration: underline;
 }
 
-.darkmode, .darkmode .card, .darkmode .navbar {
+.darkmode, 
+.darkmode .card, 
+.darkmode .navbar {
   background-color: rgb(40, 40, 40)!important;
 }
 
@@ -203,6 +204,14 @@ ul.CTAs a {
 .darkmode .table,
 .darkmode form label {
   color: var(--color-white)!important;
+}
+
+.darkmode .table {
+  background-color: rgb(45,45,45);
+}
+
+.darkmode .navbar {
+  border-bottom: 1.5px solid var(--color-white)!important;
 }
 
 .darkmode .shadow {
@@ -376,6 +385,7 @@ ul hr {
           <button class="btn" type="button" onclick="toggleDarkMode()">
             <i class="fas fa-sun"></i>
           </button>
+          <span class="text-black">{{ request.user }}</span>
         </div>
       </nav>
       

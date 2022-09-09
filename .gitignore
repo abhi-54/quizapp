@@ -3,3 +3,5 @@ LICENSE.txt
 package.json
 *.gz
 heroku_commands.txt
+staticfiles/*
+data-8-9.json

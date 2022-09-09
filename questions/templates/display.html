@@ -1,0 +1,172 @@
+{% extends 'base_quiz_panel.html' %}
+
+{% load static %}
+{% block title %} Student Information {% endblock title %}
+
+{% block content %}
+<style>
+
+.tableprofile th, tr, td {
+  padding: 0.6rem;
+  border-radius: 25px;
+}
+
+#result-table tr {
+  vertical-align: middle;
+}
+
+.result-summary {
+  display: block;
+}
+
+.hide {
+  display: none;
+}
+</style>
+<script>
+  function toggleView() {
+    $("#tableid").each(function () {
+      var $this = $(this);
+      var newrows = [];
+      $this.find("tr").each(function () {
+        var i = 0;
+        $(this).find("td,th").each(function () {
+          i++;
+          if (newrows[i] === undefined) {
+            newrows[i] = $("<tr></tr>");
+          }
+          newrows[i].append($(this));
+        });
+      });
+      $this.find("tr").remove();
+      $.each(newrows, function () {
+        $this.append(this);
+      });
+    });
+    return false;
+  }
+  window.onload = toggleView;
+</script>
+<div class="student-info-div">
+  <h3 class="text-black">{{ result_table.0.user }} Overview</h3>
+  <hr>
+  <div class="tableprofile">
+    <h5 class="text-black">General</h5>
+    <table class="text-black">
+      <tr>
+        <th>Name </th>
+        <td> {{ result_table.0.user.first_name }} {{result_table.0.user.last_name}}</td>
+      </tr>
+      <tr>
+        <th>Username</th>
+        <td>{{ result_table.0.user }}</td>
+      </tr>
+      <tr>
+        <th>Std </th>
+        <td> {{result_table.0.profile.std}}</td>
+      </tr>
+      <tr>
+        <th>Tests Given</th>
+        <td>{{ result_table|length }}</td>
+      </tr>
+      <tr>
+        <th>Subjects Allowed</th>
+        {% for subject in subjects_allowed %}
+          <td>
+            {{ subject }}
+          </td>
+        {% endfor %}
+      </tr>
+      <tr>
+        <th>Subjects Available</th>
+        {% for subject in std_subjects %}
+          <td>
+            {{ subject }}
+          </td>
+        {% endfor %}
+      </tr>
+    </table>
+  </div>
+  <hr>
+  <div class="result-table">
+    <h5 class="text-black">Results</h5>
+    <table class="table table-hover" id="result-table">
+      <th>Sr. No.</th>
+      <th>Subject</th>
+      <th>Quiz</th>
+      <th>Score</th>
+      <th>Date & Time</th>
+      {% for result in result_table %}
+        <tr>
+          <td>
+            <span>{{ forloop.counter }}</span>
+          </td>
+
+          <td>
+            <span>{{ result.quiz.subject }}</span>
+          </td>
+
+          <td>
+            <a href="{% url 'display_summary' result.id %}"
+              class="btn btn-outline-primary" 
+              data-summary='{{ result.result_summary }}'>
+              {{ result.quiz }}
+            </a>
+            <span id="hidden-summary-{{ forloop.counter }}" class="hide">{{ result.result_summary }}</span>
+          </td>
+
+          <td>
+            <span>{{ result.score }}</span>
+          </td>
+
+          <td>
+            <span>{{ result.date }}</span>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <div class="result-summary my-1" id="result-summary">
+    <table id="tableid">
+      <tr>
+      <th>Sr. No.</th>
+      {% for q in questions %}
+        <td>
+          {{ forloop.counter }}
+        </td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+      <th>Questions</th>
+      {% for q in questions %}
+        <td>
+          {{ q }}
+        </td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+      <th>Correct Answers</th>
+      {% for q in correct_answers %}
+        <td>
+          {{ q }}
+        </td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+      <th>Answered</th>
+      {% for q in answered %}
+        <td>
+          {{ q }}
+        </td>
+        {% endfor %}
+      </tr>
+    </table>
+  </div>
+  <hr>
+
+</div>
+{% endblock %}

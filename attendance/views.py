@@ -1,6 +1,5 @@
 from multiprocessing import context
 from attendance.models import attendanceTable
-from regester.forms import FormRegestration
 from django.shortcuts import redirect, render
 from quizes.models import Subjects1
 from regester.models import profile1
@@ -20,24 +19,21 @@ def select_class_view(request):
       ('Payment Alternative', '/payment/'),
       ('Select Class', '/payment/class/'),
     )
+    title = 'Payment'
   elif request.path == '/attendance/class/':
     breadcrumbs = (
       ('Home', '/panel/'),
       ('Attendance - Select Class', '/attendance/class/'),
     )
+    title = 'Attendance'
   elif request.path == '/panel/student/class/':
     breadcrumbs = (
       ('Home', '/panel/'),
       ('Student Profile', '/student/'),
       ('Select Class', '/student/class/'),
     )
-  stds = stdchoice
-  if request.path == '/payment/class/':
-    title = 'Payment'
-  elif request.path == '/attendance/class/':
-    title = 'Attendance'
-  elif request.path == '/panel/student/class/':
     title = 'Student Profiles'
+  stds = stdchoice  
   context = {
       "stds": stds,
       "title": title,
