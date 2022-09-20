@@ -1,7 +1,5 @@
-from unittest import result
-from django.http import HttpResponse
+
 from django.shortcuts import redirect, render
-from payment.models import quizAccessTable
 from questions.forms import AnswerForm, QuestionForm
 from questions.models import Answer, Question
 from quizes.forms import SubjectForm, QuizForm
@@ -12,8 +10,15 @@ from regester.models import profile1
 from results.models import Result
 from django.contrib.auth.models import User
 from quizes.views import get_subjects
+from regester.utils import stdchoice
 
 # Create your views here.
+@staff_member_required
+def api_subjects(request):
+  context = {
+    'classes': stdchoice,
+  }
+  return render(request, 'api_subjects.html', context)
 
 @staff_member_required
 def custom_admin(request):
@@ -329,7 +334,7 @@ def select_student_view(request):
     students_profile_list = profile1.objects.filter(std=std)
     students_list = []
     for student in students_profile_list:
-      result_table = Result.objects.filter(profile = student)
+      result_table = Result.objects.filter(user = student.user)
       student_dictionary = {
         'student': student,   # profile1 object
         'student_results': len(result_table),
@@ -354,10 +359,6 @@ def show_student_info_view(request, id):
   user = User.objects.get(id=id)
   profile = profile1.objects.get(user=user)
   result_table = Result.objects.filter(user=user)
-  for i in result_table:
-    sum = i.result_summary
-    if sum != None:
-      print(type(sum))
   subjects_allowed, std_subjects, not_allowed_subjects, msg_list = get_subjects(user.username)
   context = {
     'breadcrumbs': breadcrumbs,
@@ -367,6 +368,7 @@ def show_student_info_view(request, id):
   }
   return render(request, 'student_info.html', context)
 
+# this function is not used
 def display_summary(request, id):
   breadcrumbs = (
     ('Home', '/panel/'),

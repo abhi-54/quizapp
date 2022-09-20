@@ -31,7 +31,8 @@ urlpatterns = [
     path('result/',userShowResult),
     path('payment/', include('payment.urls')),
     path('all-links/', all_links_view, name='all-links-page'),
-    path('panel/', include('questions.urls'))
+    path('panel/', include('questions.urls')),
+    path('api/', include('api.urls'))
     #path('admin/test/', TemplateView.as_view(template_name='/admin/quizAllow.html')),
     
 ]

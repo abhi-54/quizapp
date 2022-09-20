@@ -19,6 +19,10 @@
   transition: display 1s ease;
 }
 
+#result-summary {
+  display: none;
+}
+
 .hide {
   display: none;
 }
@@ -84,12 +88,12 @@
           </td>
 
           <td>
-            <a href="{% url 'display_summary' result.id %}"
+            <span id="hidden-summary" class="hide">{{ result.result_summary }}</span>
+            <a onclick="showSummary({{ result.result_summary }})"
               class="btn btn-outline-primary" 
               data-summary='{{ result.result_summary }}'>
               {{ result.quiz }}
             </a>
-            <span id="hidden-summary-{{ forloop.counter }}" class="hide">{{ result.result_summary }}</span>
           </td>
 
           <td>
@@ -104,11 +108,59 @@
     </table>
   </div>
 
-  <div class="result-summary my-1" id="result-summary">
-
+  <div class="result-summary my-1">
+    <table class="text-black table" id="result-summary">
+      <th>Question</th>
+      <th>Answered</th>
+      <th>Correct Answer</th>
+    </table>
   </div>
   <hr>
 
 </div>
+<script>
+  // show result summary onclick
 
+  function showSummary(summary) {
+    var spanTag = document.getElementById('hidden-summary');
+    console.log('span tag: ', spanTag, typeof(spanTag));
+    if (summary == "None" || summary == "") {
+      console.log('yasss')
+    }
+    else {
+      result_summary_tag = document.getElementById('result-summary');
+      result_summary_tag.style.display = 'block';
+      result_summary_tag.innerHTML = 
+      `
+      <th>Question</th>
+      <th>Answered</th>
+      <th>Correct Answer</th>
+      `;
+      for (key in summary) {
+        result_summary_tag.innerHTML += 
+        `
+        <tr>
+          <td>
+            `
+              + key + 
+            `
+          </td>
+          <td>
+            `
+              + summary[key].answered + 
+            `
+          </td>
+          <td>
+            `
+              + summary[key].correct_answer + 
+            `
+          </td>
+        </tr>
+        `
+      }
+    } 
+    console.log('data: ', summary);
+    console.log('data type: ', typeof(summary));
+  }  
+</script>
 {% endblock %}

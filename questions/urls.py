@@ -1,4 +1,3 @@
-from unicodedata import name
 from django.urls import path
 from .views import *
 from attendance.views import select_class_view
@@ -20,5 +19,6 @@ urlpatterns = [
   path('student/class/', select_class_view, name='students-class-page'),
   path('student/class/select-student/', select_student_view, name='select-student-page'),
   path('student/class/select-student/<int:id>', show_student_info_view, name='student-info-page'),
-  path('display_summary/<int:id>', display_summary, name='display_summary' )
+  path('display_summary/<int:id>', display_summary, name='display_summary' ),
+  path('api-subject/', api_subjects, name='api-subject')
 ]

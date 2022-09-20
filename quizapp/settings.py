@@ -58,6 +58,8 @@ INSTALLED_APPS = [
     'regester',
     'payment',
     'attendance',
+    'api',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
