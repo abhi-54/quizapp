@@ -12,6 +12,7 @@ from .views import (
     chart_view,
     SubjectView,
     showSub,
+    ofday_view
     )
 
 app_name = 'quizes'
@@ -30,8 +31,6 @@ urlpatterns = [
     path('chart/',chart_view,name = 'chart-view'),
     path('quizes/',QuizListView.as_view(),name = 'main-view'),
     
-    
-
     # dashboard 2nd theme:
     path('home/',dashboard_view,name = 'home-view'),
 ] 

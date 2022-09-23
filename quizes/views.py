@@ -1,7 +1,7 @@
 from sqlite3 import OperationalError as cErrorSQLite
 from django.contrib.auth.models import User
 from django.db import OperationalError as cErrorDjango
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from psycopg2 import OperationalError as cErrorPostgre
 from payment.models import quizAccessTable
 from django.contrib.admin.views.decorators import staff_member_required
@@ -13,6 +13,9 @@ from questions.models import Answer, Question
 from results.models import Result
 import datetime, json
 from django.contrib.auth.decorators import login_required
+import datetime
+
+
 
 
 # Create your views here.
@@ -22,21 +25,29 @@ class doubleQuote_dict(dict):
 
 def get_subjects(username):
     msg_list, subjects_allowed, std_subjects, not_allowed_subjects = [], [], [], []
+    e = datetime.datetime.now()
+    day=(e.strftime("%a"))
+    no=["no subject","no subject"]
+    x=["today is monday so no quiz"]
+    print('day:', day)
     username = str(username)
     profile = profile1.objects.get(user = username)
     std = profile.std   # get the 'std' from profile1 table
     std_subjects = list(Subjects1.objects.filter(std = std))
     users_list = [i.user.username for i in quizAccessTable.objects.filter(std = std)]    # create users list for checking if user exits in quizAccessTable
-    if username in users_list:
-        subjects_allowed = quizAccessTable.objects.get(user = username).subjects.split(', ')    # subjects which are allowed for the user
-        subjects_allowed = [s for s in subjects_allowed if s != '']
-        if len(std_subjects) != 0:
-            subjects_allowed = [subject for subject in std_subjects if subject.__str__() in subjects_allowed]   # as Subjects1 model has to be passed and not just its name
-            not_allowed_subjects = [s for s in std_subjects if s not in subjects_allowed]
+    if day=="Sat" or day=="Sun":
+        if username in users_list:
+            subjects_allowed = quizAccessTable.objects.get(user = username).subjects.split(', ')    # subjects which are allowed for the user
+            subjects_allowed = [s for s in subjects_allowed if s != '']
+            if len(std_subjects) != 0:
+                subjects_allowed = [subject for subject in std_subjects if subject.__str__() in subjects_allowed]   # as Subjects1 model has to be passed and not just its name
+                not_allowed_subjects = [s for s in std_subjects if s not in subjects_allowed]
+            else:
+                msg_list.append(f"Alert! Subjects are not yet created for class {std}!")
         else:
-            msg_list.append(f"Alert! Subjects are not yet created for class {std}!")
+            msg_list.append("Alert! Subjects are not yet allowed! Please contact Admin!")
     else:
-        msg_list.append("Alert! Subjects are not yet allowed! Please contact Admin!")
+        msg_list.append(f"Please note that quiz is only allowed on Saturday and Sunday!")
     return subjects_allowed, std_subjects, not_allowed_subjects, msg_list
 
 # custom error 404 page (works only when DEBUG = False)
@@ -277,4 +288,3 @@ def chart_view(request):
 
 def dashboard_view(request):
     return render(request, 'home.html')
-

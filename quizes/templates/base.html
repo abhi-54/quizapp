@@ -462,6 +462,38 @@
       toggleDarkMode();
     }
   </script>
+  <script>
+    const d = new Date();
+    let day = d.getDay();
+    function doClick() {
+      const d = new Date();
+      let day = d.getDay()
+       if (day==6){
+         var link = document.getElementById('link');
+         link.href = "/question/show/{{subject.pk}}/" id="link" name = "{{subject}}";
+       }
+    else{
+      window.alert("Accessible only on saturday");
+    }
+           
+    }
+    const p = document.getElementById("demo");
+    if(day===2){
+      document.getElementById("demo").innerHtml="<a href = "/question/show/{{subject.pk}}/" name = "{{subject}}" onclick="doClick()"; return false;>{{subject}}</a>";
+    }
+    else {
+      //  block of code to be executed if the condition is false
+      document.getElementById("demo").innerHtml="<a href = "/question/show/ /"></a> ";
+    }
+    
+  
+    {% comment %} function doClick() {
+      const d = new Date();
+      let day = d.getDay()
+       if (day===2) {% endcomment %}
+           
+    }
+  </script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'dashboard/vendor/jquery/jquery.min.js' %}"></script>

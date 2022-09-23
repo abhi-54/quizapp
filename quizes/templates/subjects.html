@@ -28,8 +28,8 @@
         {% for subject in allowedSub %} 
             <div class="col-xl-3 col-md-6 p-3"> 
               <div class="card shadow p-3">
-                <a href = "/question/show/{{subject.pk}}/" name = "{{subject}}">{{subject}}</a>
-              </div>
+               <p id="demo"> <a href = "/question/show/{{subject.pk}}/" name = "{{subject}}" onclick="doClick()"; return false;>{{subject}}</a>
+               </p> </div>
             </div>
         {% endfor %}
     </div>
