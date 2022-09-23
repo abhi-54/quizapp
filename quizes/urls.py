@@ -12,7 +12,6 @@ from .views import (
     chart_view,
     SubjectView,
     showSub,
-    ofday_view
     )
 
 app_name = 'quizes'
