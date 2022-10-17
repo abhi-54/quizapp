@@ -15,6 +15,7 @@
   </title>
   <!-- jquery -->
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -115,6 +116,16 @@
   display: none;
 }
 
+.alert {
+  transition: display 1s;
+}
+  
+.alertbox {
+  width: fit-content;
+  margin: auto;
+  transition: display 1s;
+}
+
 @media (max-width: 768px) {
 		.custom-footer {
       position: relative;
@@ -203,7 +214,28 @@
         </ul>
       </div>
   </nav>
+  
   <section class="section-content">
+    <div class="my-4 alertbox" id="alertbox">
+      <div class="alert alert-info mb-3 alert-dismissible fade show" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+        <span>Please use and bookmark new site short-url: 
+          <a href="https://rebrand.ly/quizwebapp">https://rebrand.ly/quizwebapp</a> 
+        </span>
+        <button type="button" class="btn btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="closeAlert()"><i class="fas fa-times"></i></button>
+      </div>
+    </div>
+
+    <script>
+      function closeAlert() {
+        document.getElementById('alertbox').style.display = 'none';
+      }
+  
+      $(".alert-success").fadeTo(10000, 500).slideUp(500, function() {
+        $(".alert-success").slideUp(500);
+      });
+    </script>
+
     {% block content %}
     {% endblock %}
   </section>

@@ -361,6 +361,13 @@
           </nav>
           <!-- End of Topbar -->
           <div class="mx-4 alertbox">
+            <div class="alert alert-info mb-3 alert-dismissible fade show" role="alert">
+              <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+              <span>Please use and bookmark new site short-url: https://rebrand.ly/quizwebapp</span>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="closeAlert()"><i class="fas fa-times"></i></button>
+            </div>
+          </div>
+          <div class="mx-4 alertbox">
             {% if msg_list %}
               {% for msg in msg_list %}
                 {% if msg.0 == 'E' or msg.0 == 'A' %}
@@ -460,38 +467,6 @@
     s = localStorage.getItem('mode');
     if (s == 1 | s == "1") {
       toggleDarkMode();
-    }
-  </script>
-  <script>
-    const d = new Date();
-    let day = d.getDay();
-    function doClick() {
-      const d = new Date();
-      let day = d.getDay()
-       if (day==6){
-         var link = document.getElementById('link');
-         link.href = "/question/show/{{subject.pk}}/" id="link" name = "{{subject}}";
-       }
-    else{
-      window.alert("Accessible only on saturday");
-    }
-           
-    }
-    const p = document.getElementById("demo");
-    if(day===2){
-      document.getElementById("demo").innerHtml="<a href = "/question/show/{{subject.pk}}/" name = "{{subject}}" onclick="doClick()"; return false;>{{subject}}</a>";
-    }
-    else {
-      //  block of code to be executed if the condition is false
-      document.getElementById("demo").innerHtml="<a href = "/question/show/ /"></a> ";
-    }
-    
-  
-    {% comment %} function doClick() {
-      const d = new Date();
-      let day = d.getDay()
-       if (day===2) {% endcomment %}
-           
     }
   </script>
 

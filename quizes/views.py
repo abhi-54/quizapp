@@ -1,8 +1,5 @@
-from sqlite3 import OperationalError as cErrorSQLite
 from django.contrib.auth.models import User
-from django.db import OperationalError as cErrorDjango
 from django.shortcuts import render, redirect
-from psycopg2 import OperationalError as cErrorPostgre
 from payment.models import quizAccessTable
 from django.contrib.admin.views.decorators import staff_member_required
 from regester.models import profile1
@@ -15,21 +12,21 @@ import datetime, json
 from django.contrib.auth.decorators import login_required
 import datetime
 
-
-
-
-# Create your views here.
 class doubleQuote_dict(dict):
     def __str__(self):
         return json.dumps(self)
 
 def get_subjects(username):
+    """Returns the subjects' lists associated with the user
+
+    :param username: Username of the user
+    :type username: string
+    :return: returns list of allowed subjects, class subjects, not allowed subjects and message list
+    :rtype: 4 lists
+    """
     msg_list, subjects_allowed, std_subjects, not_allowed_subjects = [], [], [], []
     e = datetime.datetime.now()
     day=(e.strftime("%a"))
-    no=["no subject","no subject"]
-    x=["today is monday so no quiz"]
-    print('day:', day)
     username = str(username)
     profile = profile1.objects.get(user = username)
     std = profile.std   # get the 'std' from profile1 table
