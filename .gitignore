@@ -6,3 +6,4 @@ heroku_commands.txt
 staticfiles/*
 data-8-9.json
 .vscode
+db.sqlite3
