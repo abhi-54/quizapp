@@ -18,7 +18,7 @@ def api_subjects(request):
   context = {
     'classes': stdchoice,
   }
-  return render(request, 'api_subjects.html', context)
+  return render(request, 'panel/api_subjects.html', context)
 
 @staff_member_required
 def custom_admin(request):
@@ -34,7 +34,7 @@ def custom_admin(request):
     'quizes': quizes,
     'questions': questions
   }
-  return render(request, 'base_quiz_panel.html', context)
+  return render(request, 'panel/base_quiz_panel.html', context)
 
 @staff_member_required
 def add_subject_view(request):
@@ -60,7 +60,7 @@ def add_subject_view(request):
         form.save()
       else:
         context['form'] = form
-  return render(request, 'add_subject.html', context)
+  return render(request, 'panel/add_subject.html', context)
 
 @staff_member_required
 def add_quiz_view(request):
@@ -79,7 +79,7 @@ def add_quiz_view(request):
       form.save()
     else:
       context['form'] = form
-  return render(request, 'add_quiz.html', context)
+  return render(request, 'panel/add_quiz.html', context)
 
 @staff_member_required
 def add_question_view(request):
@@ -109,7 +109,7 @@ def add_question_view(request):
     else:
       msg = "Error!"
       context['msg'] = msg
-  return render(request, 'add_question.html', context)
+  return render(request, 'panel/add_question.html', context)
 
 @staff_member_required
 def add_answer_view(request):
@@ -122,7 +122,7 @@ def add_answer_view(request):
     form = AnswerForm(request.POST)
     if form.is_valid():
       form.save()
-  return render(request, 'add_answer.html', context)
+  return render(request, 'panel/add_answer.html', context)
 
 @staff_member_required
 def display_subjects_view(request):
@@ -148,7 +148,7 @@ def display_subjects_view(request):
       msg = f"Edit unsuccessful ! Please try again. If problem persists, contact admin."
     context['msg'] = msg
 
-  return render(request, 'view_subjects.html', context)
+  return render(request, 'panel/view_subjects.html', context)
 
 @staff_member_required
 def display_quizes_view(request):
@@ -173,7 +173,7 @@ def display_quizes_view(request):
     else:
       msg = f"Edit unsuccessful ! Please try again. If problem persists, contact admin."
     context['msg'] = msg
-  return render(request, 'view_quizes.html', context)
+  return render(request, 'panel/view_quizes.html', context)
 
 @staff_member_required
 def display_questions_view(request):
@@ -184,7 +184,7 @@ def display_questions_view(request):
   context = {
     'breadcrumbs': breadcrumbs,
   }
-  return render(request, 'view_questions.html', context)
+  return render(request, 'panel/view_questions.html', context)
 
 @staff_member_required
 def display_Allquestions_view(request):
@@ -218,7 +218,7 @@ def display_Allquestions_view(request):
       msg = f"Edit unsuccessful ! Please try again. If problem persists, contact admin."
     context['msg'] = msg
   
-  return render(request, 'allQuestions.html', context)
+  return render(request, 'panel/allQuestions.html', context)
 
 @staff_member_required
 def modify_subject_view(request):
@@ -239,7 +239,7 @@ def modify_subject_view(request):
       'sModel': sModel,
       'sForm': sForm
     }
-    return render(request, 'modify_subject.html', context)
+    return render(request, 'panel/modify_subject.html', context)
   return redirect('view-subjects-page')
 
 @staff_member_required
@@ -267,7 +267,7 @@ def modify_quiz_view(request):
       'quizForm': quizForm,
       'subjectIndex': subjectIndex
     }
-    return render(request, 'modify_quiz.html', context)
+    return render(request, 'panel/modify_quiz.html', context)
   return redirect('view-quizes-page')
 
 @staff_member_required
@@ -307,7 +307,7 @@ def modify_question_view(request):
       'index2': i_typeQ,
       'formset': formset
     }
-    return render(request, 'modify_question.html', context)
+    return render(request, 'panel/modify_question.html', context)
   return redirect('view-questions-page')
 
 @staff_member_required
@@ -319,7 +319,7 @@ def students_view(request):
   context = {
     'breadcrumbs': breadcrumbs,
   }
-  return render(request, 'students.html', context) 
+  return render(request, 'panel/students.html', context) 
 
 @staff_member_required
 def select_student_view(request):
@@ -344,7 +344,7 @@ def select_student_view(request):
       'breadcrumbs': breadcrumbs,
       'students_list': students_list,
     }
-    return render(request, 'select_student.html', context)
+    return render(request, 'panel/select_student.html', context)
   return redirect('students-class-page')
 
 @staff_member_required
@@ -366,43 +366,4 @@ def show_student_info_view(request, id):
     'subjects_allowed': subjects_allowed,
     'std_subjects': std_subjects
   }
-  return render(request, 'student_info.html', context)
-
-# this function is not used
-def display_summary(request, id):
-  breadcrumbs = (
-    ('Home', '/panel/'),
-    ('Student Profile', '/panel/student/'),
-    ('Select Class', '/panel/student/class/'),
-    ('Select Student', '/panel/student/class/select-student/'),
-    ('Student Information', '#'),
-  )
-  result_table = Result.objects.get(id=id)
-  user = User.objects.get(username=result_table.user)
-  profile = profile1.objects.get(user=user)
-  result_tables = Result.objects.filter(user=user)
-  subjects_allowed, std_subjects, not_allowed_subjects, msg_list = get_subjects(user.username)
-  
-
-  # ------------------------------------
-  result_table = Result.objects.get(id=id)
-  summary = result_table.result_summary   # dictionary
-  
-  questions = []
-  correct_answers = []
-  answered = []
-  if summary != None or summary == '':
-    for k, v in summary.items():
-      questions.append(k)
-      correct_answers.append(v['correct_answer'])
-      answered.append(v['answered'])
-  context = {
-    'breadcrumbs': breadcrumbs,
-    'result_table': result_tables,
-    'subjects_allowed': subjects_allowed,
-    'std_subjects': std_subjects,
-    'questions': questions,
-    'correct_answers': correct_answers,
-    'answered': answered
-  }
-  return render(request, 'display.html', context)
+  return render(request, 'panel/student_info.html', context)

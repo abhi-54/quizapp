@@ -12,7 +12,6 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 @staff_member_required
 def select_class_view(request):
-  print(request.path)
   if request.path == '/payment/class/':  
     breadcrumbs = (
       ('Home', '/panel/'),
@@ -76,7 +75,6 @@ def mark_attendance_view(request):
     msg = ''
     for i in users:
       user_name = i.get_username()
-      print('------', user_name)
       userModel = User.objects.get(username = user_name)
       userModel_list.append(userModel)
       
@@ -101,7 +99,6 @@ def attendace_marked_view(request):
   if request.method == 'POST':
     date1 = request.POST['date']
     date = datetime.datetime.strptime(date1, '%d/%m/%Y').strftime('%Y-%m-%d')
-    print(date1, date)
     subject = request.POST['subjects']
     std = request.POST['std']
     data = request.POST

@@ -1,0 +1,94 @@
+{% extends 'panel/base_quiz_panel.html' %}
+
+{% block title %}
+  Add Question
+{% endblock title %}
+
+{% block content %}
+<style>
+  .control-group {
+    margin-top: 1rem;
+    padding: 0.5rem;
+  }
+
+  .control-label {
+    font-weight: bold;
+  }
+
+  .asteriskField {
+    color: red;
+    font-weight: bolder;
+    margin-left: 0.1rem;
+  }
+
+  .controls input, select {
+    border-radius: 0.5rem;
+    padding: 0.3rem;
+    border: 1px solid black;
+  }
+
+  #id_text {
+    width: 50rem;
+  }
+
+  .multiField {  
+    width: max-content;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    border-bottom: 1px solid rgb(33,37,41);
+  }
+
+  .checkboxinput {
+    margin-left: 5rem;
+  }
+
+  .checkbox {
+    margin-right: 4rem;
+  }
+  
+  @media only screen and (max-width: 1000px) {
+    .container, .nav-item {
+      max-width: 100%;
+    }
+
+    #id_text {
+      width: auto;
+    }
+
+    select {
+      width: 100%;
+    }
+
+    .multiField {
+      flex-direction: column;
+    }
+
+    .checkboxinput {
+      margin-left: 0rem;
+    }
+  }
+</style>
+
+<div>
+    {% load crispy_forms_tags %}
+    <form action="#" method="post">
+      {% csrf_token %}
+      <h3 class="text-black">
+        Add Question
+      </h3>
+      <div class="mt-4 text-black"> 
+        {{ q_form |crispy }}
+      </div>
+      <hr>
+      <h3 class="text-black mt-4">
+        Add Answers
+      </h3>
+      <div class="mt-3 text-black">
+        {{ a_form | crispy }}
+        <input class="btn btn-success mt-4" type="submit" value="Submit">
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock content %}

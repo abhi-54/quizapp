@@ -1,0 +1,38 @@
+{% extends 'panel/base_quiz_panel.html' %}
+
+{% block title %}
+  View Questions
+{% endblock title %}
+
+{% block content %}
+<style>
+.questiondiv a, .questiondiv li {
+  color: var(--colorA);
+  font-weight: 500;
+}
+
+.questiondiv a:hover {
+  font-weight: 550;
+  color: var(--colorH);
+  text-decoration: underline;
+}
+</style>
+
+
+<h3 class="text-black mb-4">
+  View Questions
+</h3>
+
+<div class="questiondiv">
+  <ul>
+    <li>
+      <a href="all/">View All Questions</a>
+    </li>
+    <li>
+      <a class="disabled">View Questions Classwise</a>
+      <!-- <a class="disabled" href="classwise/">View Questions Classwise</a> -->
+    </li>
+  </ul>
+</div>
+
+{% endblock content %}

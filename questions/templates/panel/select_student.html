@@ -1,0 +1,48 @@
+{% extends 'panel/base_quiz_panel.html' %}
+
+{% load static %}
+{% block title %} Select Student {% endblock title %}
+
+{% block content %}
+
+<div class="select-student-div">
+  <h3 class="text-black">Class {{ students_list.0.student.std }} Students</h3>
+  <p class="text-black">Select Student</p>
+
+  <table class="table table-hover">
+    <th>Sr. No.</th>
+    <th>Username</th>
+    <th>Name</th>
+    <th>Tests Given</th>
+
+    {% for i in students_list %}
+    <tr>
+      <td>
+        <span>
+          {{ forloop.counter }}
+        </span>
+      </td>
+
+      <td>
+        <a class="btn btn-outline-primary" href="/panel/student/class/select-student/{{ i.student.user.id }}">
+          {{ i.student.user }}
+        </a>
+      </td>
+
+      <td>
+        <span>
+          {{ i.student.user.first_name }} {{ i.student.user.last_name }}
+        </span>
+      </td>
+
+      <td>
+        <span>
+          {{ i.student_results }}
+        </span>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+{% endblock %}

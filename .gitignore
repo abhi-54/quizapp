@@ -7,3 +7,5 @@ staticfiles/*
 data-8-9.json
 .vscode
 db.sqlite3
+try.py
+new.xlsx
